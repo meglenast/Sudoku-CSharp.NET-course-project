@@ -1,0 +1,152 @@
+﻿<Page x:Class="Sudoku.GridPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Sudoku"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Grid">
+
+    <Grid>
+        <StackPanel Orientation="Horizontal">
+            <!--Sudoku grid-->
+            <Grid x:Name="Grid" Margin="50,50,0,0" Height ="405" Width="405">
+                <Grid.Resources>
+                    <Style x:Key="CellStyle">
+                        <Setter Property="TextBox.Padding"       Value="10"/>
+                        <Setter Property="TextBox.FontSize"      Value="20"/>
+                        <Setter Property="TextBox.MaxLength"     Value="1"/>
+                        <Setter Property="TextBox.TextAlignment" Value="Center"/>
+                        <Setter Property="TextBox.BorderBrush"   Value="Black"/>
+                    </Style>
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width ="*"/>
+                    <ColumnDefinition Width ="*"/>
+                    <ColumnDefinition Width ="*"/>
+                    <ColumnDefinition Width ="*"/>
+                    <ColumnDefinition Width ="*"/>
+                    <ColumnDefinition Width ="*"/>
+                    <ColumnDefinition Width ="*"/>
+                    <ColumnDefinition Width ="*"/>
+                    <ColumnDefinition Width ="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <!--First row-->
+                <TextBox x:Name="TxtBox_00" Grid.Row="0" Grid.Column="0"  Style="{StaticResource CellStyle}" BorderThickness="3,3,1,1"   TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_01" Grid.Row="0" Grid.Column="1"  Style="{StaticResource CellStyle}" BorderThickness="1,3,1,1"   TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_02" Grid.Row="0" Grid.Column="2"  Style="{StaticResource CellStyle}" BorderThickness="1,3,1,1"   TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_03" Grid.Row="0" Grid.Column="3"  Style="{StaticResource CellStyle}" BorderThickness="2.5,3,1,1" TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_04" Grid.Row="0" Grid.Column="4"  Style="{StaticResource CellStyle}" BorderThickness="1,3,1,1"   TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_05" Grid.Row="0" Grid.Column="5"  Style="{StaticResource CellStyle}" BorderThickness="1,3,1,1"   TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_06" Grid.Row="0" Grid.Column="6"  Style="{StaticResource CellStyle}" BorderThickness="2.5,3,1,1" TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_07" Grid.Row="0" Grid.Column="7"  Style="{StaticResource CellStyle}" BorderThickness="1,3,1,1"   TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_08" Grid.Row="0" Grid.Column="8"  Style="{StaticResource CellStyle}" BorderThickness="1,3,3,1"   TextChanged="TxtBoxChanged"/>
+
+                <!--Second row-->
+                <TextBox x:Name="TxtBox_10" Grid.Row="1" Grid.Column="0"  Style="{StaticResource CellStyle}" BorderThickness="3,1,1,1"   TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_11" Grid.Row="1" Grid.Column="1"  Style="{StaticResource CellStyle}"                             TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_12" Grid.Row="1" Grid.Column="2"  Style="{StaticResource CellStyle}"                             TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_13" Grid.Row="1" Grid.Column="3"  Style="{StaticResource CellStyle}" BorderThickness="2.5,1,1,1" TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_14" Grid.Row="1" Grid.Column="4"  Style="{StaticResource CellStyle}"                             TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_15" Grid.Row="1" Grid.Column="5"  Style="{StaticResource CellStyle}"                             TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_16" Grid.Row="1" Grid.Column="6"  Style="{StaticResource CellStyle}" BorderThickness="2.5,1,1,1" TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_17" Grid.Row="1" Grid.Column="7"  Style="{StaticResource CellStyle}"                             TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="Txtbox_18" Grid.Row="1" Grid.Column="8"  Style="{StaticResource CellStyle}" BorderThickness="1,1,3,1"   TextChanged="TxtBoxChanged"/>
+
+                <!--Third row-->
+                <TextBox x:Name="TxtBox_20" Grid.Row="2" Grid.Column="0"  Style="{StaticResource CellStyle}" BorderThickness="3,1,1,1"   TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_21" Grid.Row="2" Grid.Column="1"  Style="{StaticResource CellStyle}"                             TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_22" Grid.Row="2" Grid.Column="2"  Style="{StaticResource CellStyle}"                             TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_23" Grid.Row="2" Grid.Column="3"  Style="{StaticResource CellStyle}" BorderThickness="2.5,1,1,1" TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_24" Grid.Row="2" Grid.Column="4"  Style="{StaticResource CellStyle}"                             TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_25" Grid.Row="2" Grid.Column="5"  Style="{StaticResource CellStyle}"                             TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_26" Grid.Row="2" Grid.Column="6"  Style="{StaticResource CellStyle}" BorderThickness="2.5,1,1,1" TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_27" Grid.Row="2" Grid.Column="7"  Style="{StaticResource CellStyle}"                             TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_28" Grid.Row="2" Grid.Column="8"  Style="{StaticResource CellStyle}" BorderThickness="1,1,3,1"   TextChanged="TxtBoxChanged"/>
+
+                <!--Fourth row-->
+                <TextBox x:Name="TxtBox_30" Grid.Row="3" Grid.Column="0" Style="{StaticResource CellStyle}" BorderThickness="3,2.5,1,1"   TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_31" Grid.Row="3" Grid.Column="1" Style="{StaticResource CellStyle}" BorderThickness="1,2.5,1,1"   TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_32" Grid.Row="3" Grid.Column="2" Style="{StaticResource CellStyle}" BorderThickness="1,2.5,1,1"   TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_33" Grid.Row="3" Grid.Column="3" Style="{StaticResource CellStyle}" BorderThickness="2.5,2.5,1,1" TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_34" Grid.Row="3" Grid.Column="4" Style="{StaticResource CellStyle}" BorderThickness="1,2.5,1,1"   TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_35" Grid.Row="3" Grid.Column="5" Style="{StaticResource CellStyle}" BorderThickness="1,2.5,1,1"   TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_36" Grid.Row="3" Grid.Column="6" Style="{StaticResource CellStyle}" BorderThickness="2.5,2.5,1,1" TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_37" Grid.Row="3" Grid.Column="7" Style="{StaticResource CellStyle}" BorderThickness="1,2.5,1,1"   TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="Txtbox_38" Grid.Row="3" Grid.Column="8" Style="{StaticResource CellStyle}" BorderThickness="1,2.5,3,1"   TextChanged="TxtBoxChanged"/>
+
+                <!--Fifth row-->
+                <TextBox x:Name="TxtBox_40" Grid.Row="4" Grid.Column="0" Style="{StaticResource CellStyle}" BorderThickness="3,1,1,1"   TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_41" Grid.Row="4" Grid.Column="1" Style="{StaticResource CellStyle}"                             TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_42" Grid.Row="4" Grid.Column="2" Style="{StaticResource CellStyle}"                             TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_43" Grid.Row="4" Grid.Column="3" Style="{StaticResource CellStyle}" BorderThickness="2.5,1,1,1" TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_44" Grid.Row="4" Grid.Column="4" Style="{StaticResource CellStyle}"                             TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_45" Grid.Row="4" Grid.Column="5" Style="{StaticResource CellStyle}"                             TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_46" Grid.Row="4" Grid.Column="6" Style="{StaticResource CellStyle}" BorderThickness="2.5,1,1,1" TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_47" Grid.Row="4" Grid.Column="7" Style="{StaticResource CellStyle}"                             TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_48" Grid.Row="4" Grid.Column="8" Style="{StaticResource CellStyle}" BorderThickness="1,1,3,1"   TextChanged="TxtBoxChanged"/>
+
+                <!--Sixth row-->
+                <TextBox x:Name="TxtBox_50" Grid.Row="5" Grid.Column="0" Style="{StaticResource CellStyle}" BorderThickness="3,1,1,1"   TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_51" Grid.Row="5" Grid.Column="1" Style="{StaticResource CellStyle}"                             TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_52" Grid.Row="5" Grid.Column="2" Style="{StaticResource CellStyle}"                             TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_53" Grid.Row="5" Grid.Column="3" Style="{StaticResource CellStyle}" BorderThickness="2.5,1,1,1" TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_54" Grid.Row="5" Grid.Column="4" Style="{StaticResource CellStyle}"                             TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_55" Grid.Row="5" Grid.Column="5" Style="{StaticResource CellStyle}"                             TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_56" Grid.Row="5" Grid.Column="6" Style="{StaticResource CellStyle}" BorderThickness="2.5,1,1,1" TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_57" Grid.Row="5" Grid.Column="7" Style="{StaticResource CellStyle}"                             TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_58" Grid.Row="5" Grid.Column="8" Style="{StaticResource CellStyle}" BorderThickness="1,1,3,1"   TextChanged="TxtBoxChanged"/>
+
+                <!--Seventh row-->
+                <TextBox x:Name="TxtBox_60" Grid.Row="6" Grid.Column="0" Style="{StaticResource CellStyle}" BorderThickness="3,2.5,1,1"   TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_61" Grid.Row="6" Grid.Column="1" Style="{StaticResource CellStyle}" BorderThickness="1,2.5,1,1"   TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_62" Grid.Row="6" Grid.Column="2" Style="{StaticResource CellStyle}" BorderThickness="1,2.5,1,1"   TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_63" Grid.Row="6" Grid.Column="3" Style="{StaticResource CellStyle}" BorderThickness="2.5,2.5,1,1" TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_64" Grid.Row="6" Grid.Column="4" Style="{StaticResource CellStyle}" BorderThickness="1,2.5,1,1"   TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_65" Grid.Row="6" Grid.Column="5" Style="{StaticResource CellStyle}" BorderThickness="1,2.5,1,1"   TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_66" Grid.Row="6" Grid.Column="6" Style="{StaticResource CellStyle}" BorderThickness="2.5,2.5,1,1" TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_67" Grid.Row="6" Grid.Column="7" Style="{StaticResource CellStyle}" BorderThickness="1,2.5,1,1"   TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_68" Grid.Row="6" Grid.Column="8" Style="{StaticResource CellStyle}" BorderThickness="1,2.5,3,1"   TextChanged="TxtBoxChanged"/>
+
+                <!--Eighth row-->
+                <TextBox x:Name="TxtBox_70" Grid.Row="7" Grid.Column="0" Style="{StaticResource CellStyle}" BorderThickness="3,1,1,1"   TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_71" Grid.Row="7" Grid.Column="1" Style="{StaticResource CellStyle}"                             TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_72" Grid.Row="7" Grid.Column="2" Style="{StaticResource CellStyle}"                             TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_73" Grid.Row="7" Grid.Column="3" Style="{StaticResource CellStyle}" BorderThickness="2.5,1,1,1" TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_74" Grid.Row="7" Grid.Column="4" Style="{StaticResource CellStyle}"                             TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_75" Grid.Row="7" Grid.Column="5" Style="{StaticResource CellStyle}"                             TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_76" Grid.Row="7" Grid.Column="6" Style="{StaticResource CellStyle}" BorderThickness="2.5,1,1,1" TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_77" Grid.Row="7" Grid.Column="7" Style="{StaticResource CellStyle}"                             TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_78" Grid.Row="7" Grid.Column="8" Style="{StaticResource CellStyle}" BorderThickness="1,1,3,1"   TextChanged="TxtBoxChanged"/>
+
+                <!--Nineth row-->
+                <TextBox x:Name="TxtBox_80" Grid.Row="8" Grid.Column="0" Style="{StaticResource CellStyle}" BorderThickness="3,1,1,3"   TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_81" Grid.Row="8" Grid.Column="1" Style="{StaticResource CellStyle}" BorderThickness="1,1,1,3"   TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_82" Grid.Row="8" Grid.Column="2" Style="{StaticResource CellStyle}" BorderThickness="1,1,1,3"   TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_83" Grid.Row="8" Grid.Column="3" Style="{StaticResource CellStyle}" BorderThickness="2.5,1,1,3" TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_84" Grid.Row="8" Grid.Column="4" Style="{StaticResource CellStyle}" BorderThickness="1,1,1,3"   TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_85" Grid.Row="8" Grid.Column="5" Style="{StaticResource CellStyle}" BorderThickness="1,1,1,3"   TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_86" Grid.Row="8" Grid.Column="6" Style="{StaticResource CellStyle}" BorderThickness="2.5,1,1,3" TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_87" Grid.Row="8" Grid.Column="7" Style="{StaticResource CellStyle}" BorderThickness="1,1,1,3"   TextChanged="TxtBoxChanged"/>
+                <TextBox x:Name="TxtBox_88" Grid.Row="8" Grid.Column="8" Style="{StaticResource CellStyle}" BorderThickness="1,1,3,3"   TextChanged="TxtBoxChanged"/>
+            </Grid>
+            <StackPanel Margin="50,100" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Button x:Name="BtnUndo" Content="Undo" Width="100" Height="45" Margin="10" Click="BtnUndo_Click"/>
+                <Button x:Name="BtnRedo" Content="Redo" Width="100" Height="45" Margin="10"/>
+                <Button x:Name="BtnSave" Content="SaveGame" Width="100" Height="45" Margin="10"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Page>
