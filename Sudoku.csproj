@@ -59,6 +59,7 @@
       <DependentUpon>GridPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="SudokuGrid.cs" />
+    <Compile Include="SudokuSolver.cs" />
     <Page Include="GridPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

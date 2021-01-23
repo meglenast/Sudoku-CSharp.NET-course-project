@@ -214,5 +214,14 @@ namespace Sudoku
         {
 
         }
+
+        private void BtnSolve_Click(object sender, RoutedEventArgs e)
+        {
+            SudokuSolver solver = new SudokuSolver(grid.Grid);
+            int[,] solution = solver.GetSolution();
+
+
+
+        }
     }
 }

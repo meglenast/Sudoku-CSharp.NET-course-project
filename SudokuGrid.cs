@@ -8,12 +8,13 @@ namespace Sudoku
 {
     class SudokuGrid
     {
-        public static readonly int GRID_SIZE = 9;
-        private int[,] grid;
+        protected static readonly int GRID_SIZE = 9;
+        protected int[,] grid;
         private Stack<int[,]> undoStackHistory;
         private Stack<int[,]> redoStackHistory;
         private bool initialize;
-        private int numInitValues;
+        protected int numInitValues;
+        
         public SudokuGrid()
         {
             //grid = new int[9][];
@@ -56,6 +57,23 @@ namespace Sudoku
         }
 
         #region Properties
+
+        public int[,] Grid 
+        { 
+            get
+            {
+                int[,] res = new int[GRID_SIZE, GRID_SIZE];
+
+                for (int row = 0; row < GRID_SIZE; row++)
+                {
+                    for (int col = 0; col < GRID_SIZE; col++)
+                    {
+                        res[row, col] = grid[row, col];
+                    }
+                }
+                return res;
+            }
+        }
 
 
         public bool Initialize { set { initialize = value; } }
