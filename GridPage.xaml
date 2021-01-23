@@ -144,8 +144,8 @@
             </Grid>
             <StackPanel Margin="50,100" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Button x:Name="BtnUndo" Content="Undo" Width="100" Height="45" Margin="10" Click="BtnUndo_Click"/>
-                <Button x:Name="BtnRedo" Content="Redo" Width="100" Height="45" Margin="10"/>
-                <Button x:Name="BtnSave" Content="SaveGame" Width="100" Height="45" Margin="10"/>
+                <Button x:Name="BtnRedo" Content="Redo" Width="100" Height="45" Margin="10" Click="BtnRedo_Click"/>
+                <Button x:Name="BtnSave" Content="SaveGame" Width="100" Height="45" Margin="10" Click="BtnSave_Click"/>
             </StackPanel>
         </StackPanel>
     </Grid>

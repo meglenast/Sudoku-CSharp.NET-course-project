@@ -51,7 +51,17 @@ namespace Sudoku
         private void SetUsersValue(TextBox textBox, int res)
         {
             (int row, int col) coordinates = GetBoxCoordinatesByName(textBox);
-            grid[coordinates.row, coordinates.col] = Int32.Parse(textBox.Text);
+            
+            if (int.TryParse(textBox.Text,out int result))
+            {
+                grid[coordinates.row, coordinates.col] = result;
+            }
+            else
+            {
+                grid[coordinates.row, coordinates.col] = 0;
+            }
+            //grid[coordinates.row, coordinates.col] = Int32.Parse(textBox.Text);
+            
             if (res == 0)
             {
                 textBox.Text = string.Empty;
@@ -131,36 +141,78 @@ namespace Sudoku
         private void BtnUndo_Click(object sender, RoutedEventArgs e)
         {
             if (grid.Undoable())
-            {
-                int[,] prev = grid.getPreviousGrid();
-                List<TextBox> curr = AllTextBoxes(this);
-
-                int col = 0;
-                int row = 0;
-
-                foreach (var textBox in curr)
-                {
-                    if (col == 9)
-                    {
-                        col = 0;
-                        row++;
-                    }
-                    if (row == 9)
-                    {
-                        return;
-                    }
-                    if (int.TryParse(textBox.Text, out int res) && res != prev[row, col] && prev[row, col] == 0)
-                    {
-                        SetUsersValue(textBox, 0);
-                        return;
-                    }
-                    ++col;
-                }
-            }
+                Undo();
             else
-            {
                 MessageBox.Show("Cant be undo.");
+        }
+
+        private void BtnRedo_Click(object sender, RoutedEventArgs e)
+        {
+            if (grid.Redoable())
+                Redo();
+            else
+                MessageBox.Show("Cant be redo.");
+        }
+
+        private void Undo()
+        {
+            int[,] prev = grid.getPreviousGrid();
+            List<TextBox> curr = AllTextBoxes(this);
+
+            int col = 0;
+            int row = 0;
+
+            foreach (var textBox in curr)
+            {
+                if (col == 9)
+                {
+                    col = 0;
+                    row++;
+                }
+                if (row == 9)
+                {
+                    return;
+                }
+                if (int.TryParse(textBox.Text, out int res) && res != prev[row, col] && prev[row, col] == 0)
+                {
+                    SetUsersValue(textBox, 0);
+                    return;
+                }
+                ++col;
             }
+        }
+
+        private void Redo()
+        {
+            int[,] redoGrid = grid.GetRedoGrid();
+            List<TextBox> curr = AllTextBoxes(this);
+
+            int col = 0;
+            int row = 0;
+
+            foreach (var textBox in curr)
+            {
+                if (col == 9)
+                {
+                    col = 0;
+                    row++;
+                }
+                if (row == 9)
+                {
+                    return;
+                }
+                if ((int.TryParse(textBox.Text, out int res) && res != redoGrid[row, col]) || (textBox.Text == string.Empty && redoGrid[row,col] != 0))
+                {
+                    SetUsersValue(textBox, redoGrid[row,col]);
+                    return;
+                }
+                ++col;
+            }
+        }
+
+        private void BtnSave_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

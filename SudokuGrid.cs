@@ -11,6 +11,7 @@ namespace Sudoku
         public static readonly int GRID_SIZE = 9;
         private int[,] grid;
         private Stack<int[,]> undoStackHistory;
+        private Stack<int[,]> redoStackHistory;
         private bool initialize;
         private int numInitValues;
         public SudokuGrid()
@@ -29,15 +30,15 @@ namespace Sudoku
             initialize = true;
             grid = new int[,]
             {
-                    {5,3,0,0,7,0,0,0,0},
-                    {6,0,0,1,9,5,0,0,0},
-                    {0,9,8,0,0,0,0,6,0},
-                    {8,0,0,0,6,0,0,0,3},
-                    {4,0,0,8,0,3,0,0,1},
-                    {7,0,0,0,2,0,0,0,6},
-                    {0,6,0,0,0,0,2,8,0},
-                    {0,0,0,4,1,9,0,0,5},
-                    {0,0,0,0,8,0,0,7,9}
+                    {5,3,0,0,7,0,0,0,0},//3
+                    {6,0,0,1,9,5,0,0,0},//4
+                    {0,9,8,0,0,0,0,6,0},//3
+                    {8,0,0,0,6,0,0,0,3},//3
+                    {4,0,0,8,0,3,0,0,1},//4
+                    {7,0,0,0,2,0,0,0,6},//3
+                    {0,6,0,0,0,0,2,8,0},//3
+                    {0,0,0,4,1,9,0,0,5},//4
+                    {0,0,0,0,8,0,0,7,9}//3
 
                 //{5,0,0,0,0,0,0,0,0},
                 //{0,0,0,0,0,0,0,0,0},
@@ -49,8 +50,9 @@ namespace Sudoku
                 //{0,0,0,0,0,0,0,0,0},
                 //{0,0,0,0,0,0,0,0,0}
             };
-           // numInitValues = SetNumInitValues();
+            SetNumInitValues();
             undoStackHistory = new Stack<int[,]>();
+            redoStackHistory = new Stack<int[,]>();
         }
 
         #region Properties
@@ -172,24 +174,46 @@ namespace Sudoku
 
         public bool Undoable()
         {
-            if (undoStackHistory.Count < 2)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return undoStackHistory.Count < 2 ? false : true;
+        }
+
+        public bool Redoable()
+        {
+            return redoStackHistory.Count < 1 ? false : true;
         }
 
         public int[,] getPreviousGrid()
         {
             int[,] temp = new int[9, 9];
-            undoStackHistory.Pop();
+            redoStackHistory.Push(undoStackHistory.Pop());
             temp = undoStackHistory.Peek();
             return temp;
 
         }
+
+        public int[,] GetRedoGrid()
+        {
+            int[,] temp = new int[9, 9];
+            temp = redoStackHistory.Pop();
+            return temp;
+        }
         #endregion
+
+        private void SetNumInitValues()
+        {
+            int cnt = 0;
+
+            for (int i = 0; i < GRID_SIZE; i++)
+            {
+                for (int j = 0; j < GRID_SIZE; j++)
+                {
+                    if (grid[i,j] != 0)
+                    {
+                        ++cnt;
+                    }
+                }
+            }
+            numInitValues = cnt;
+        }
     }
 }
