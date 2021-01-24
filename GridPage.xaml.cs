@@ -51,8 +51,8 @@ namespace Sudoku
         private void SetUsersValue(TextBox textBox, int res)
         {
             (int row, int col) coordinates = GetBoxCoordinatesByName(textBox);
-            
-            if (int.TryParse(textBox.Text,out int result))
+
+            if (int.TryParse(textBox.Text, out int result))
             {
                 grid[coordinates.row, coordinates.col] = result;
             }
@@ -61,7 +61,7 @@ namespace Sudoku
                 grid[coordinates.row, coordinates.col] = 0;
             }
             //grid[coordinates.row, coordinates.col] = Int32.Parse(textBox.Text);
-            
+
             if (res == 0)
             {
                 textBox.Text = string.Empty;
@@ -201,9 +201,9 @@ namespace Sudoku
                 {
                     return;
                 }
-                if ((int.TryParse(textBox.Text, out int res) && res != redoGrid[row, col]) || (textBox.Text == string.Empty && redoGrid[row,col] != 0))
+                if ((int.TryParse(textBox.Text, out int res) && res != redoGrid[row, col]) || (textBox.Text == string.Empty && redoGrid[row, col] != 0))
                 {
-                    SetUsersValue(textBox, redoGrid[row,col]);
+                    SetUsersValue(textBox, redoGrid[row, col]);
                     return;
                 }
                 ++col;
@@ -220,8 +220,35 @@ namespace Sudoku
             SudokuSolver solver = new SudokuSolver(grid.Grid);
             int[,] solution = solver.GetSolution();
 
+            List<TextBox> curr = AllTextBoxes(this);
 
+            int col = 0;
+            int row = 0;
+
+            foreach (var textBox in curr)
+            {
+                if (col == 9)
+                {
+                    col = 0;
+                    row++;
+                }
+                if (row == 9)
+                {
+                    return;
+                }
+                if ((int.TryParse(textBox.Text, out int res) && res != solution[row, col]) || (textBox.Text == string.Empty && solution[row, col] != 0))
+                {
+                    SetSolutionValue(textBox, solution[row, col].ToString());
+                }
+                ++col;
+            }
 
         }
+        private void SetSolutionValue(TextBox textBox, string value)
+        {
+            textBox.Text = value;
+            textBox.Background = Brushes.PaleVioletRed;
+        }
+
     }
 }
