@@ -11,6 +11,8 @@
 
     <Page.CommandBindings>
         <CommandBinding Command="w:CustomCommands.Easy" CanExecute="EasyCommand_CanExecute" Executed="EasyCommand_Executed"/>
+        <CommandBinding Command="w:CustomCommands.Medium" CanExecute="MediumCommand_CanExecute" Executed="MediumCommand_Executed"/>
+        <CommandBinding Command="w:CustomCommands.Hard" CanExecute="HardCommand_CanExecute" Executed="HardCommand_Executed"/>
     </Page.CommandBindings>
 
     <Grid>
@@ -20,8 +22,8 @@
             <TextBlock Text="Choose difficulty..." FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Top" Height="50"/>
             <StackPanel VerticalAlignment="Top"  Orientation="Horizontal" Margin="0,60,0,0">
                 <Button x:Name="BtnEasyDifficulty"   Content="Easy"   Margin="10" Width="100" Height="40" Command="w:CustomCommands.Easy"/>
-                <Button x:Name="BtnMediumDifficulty" Content="Medium" Margin="10" Width="100" Height="40" />
-                <Button x:Name="BtnHardDifficulty"   Content="Hard" Margin="10" Width="100" Height="40" />
+                <Button x:Name="BtnMediumDifficulty" Content="Medium" Margin="10" Width="100" Height="40" Command="w:CustomCommands.Medium"/>
+                <Button x:Name="BtnHardDifficulty"   Content="Hard" Margin="10" Width="100" Height="40" Command="w:CustomCommands.Hard"/>
             </StackPanel>
         </StackPanel>
     </Grid>

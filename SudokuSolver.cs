@@ -56,7 +56,7 @@ namespace Sudoku
 
         public int[,] GetSolution()
         {
-            SolveSudoku();
+            SolveSudoku1();
             int[,] res = new int[GRID_SIZE, GRID_SIZE];
 
             for (int row = 0; row < GRID_SIZE; row++)
@@ -67,6 +67,69 @@ namespace Sudoku
                 }
             }
             return res;
+        }
+
+        private bool SolveSudoku1()
+        {
+            int row = -1;
+            int col = -1;
+            bool isEmpty = true;
+
+            for (int currRow = 0; currRow < GRID_SIZE; currRow++)
+            {
+                for (int currCol = 0; currCol < GRID_SIZE; currCol++)
+                {
+                    if (solution[currRow, currCol] == 0)
+                    {
+                        row = currRow;
+                        col = currCol;
+
+                        isEmpty = false;
+                        break;
+                    }
+                }
+                if (!isEmpty)
+                {
+                    break;
+                }
+            }
+            if (isEmpty)
+            {
+                return true;
+            }
+
+            List<int> lst = new List<int>();
+            Random rand = new Random();
+            
+            for (int value = 1; value <= GRID_SIZE; value++)
+            {
+                int val;
+                while(true)
+                {
+                    val = rand.Next(1, 10);
+                    if (!lst.Contains(val))
+                    {
+                        lst.Add(val);
+                        break;
+                    }
+                    lst.Add(val);
+                }
+
+                if (solution[row, col] == 0 && CheckValidMove(row, col, val))
+                {
+                    solution[row, col] = val;
+
+                    if (SolveSudoku1())
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        solution[row, col] = 0;
+                    }
+                }
+            }
+            return false;
         }
 
         private bool SolveSudoku()
@@ -98,9 +161,12 @@ namespace Sudoku
                 return true;
             }
 
+
             for (int value = 1; value <= GRID_SIZE; value++)
             {
-                if (CheckValidMove(row,col,value))
+                
+
+                if (solution[row,col] == 0 && CheckValidMove(row,col,value))
                 {
                     solution[row, col] = value;
 
@@ -119,7 +185,8 @@ namespace Sudoku
 
         private bool CheckValidMove(int rowInd, int colInd, int value)
         {
-            return (!CheckRowContains(rowInd, value) &&
+            return 
+                    (!CheckRowContains(rowInd, value) &&
                     !CheckColContains(colInd, value) &&
                     !CheckSubgridContains(GetSubgridCoords(rowInd, colInd), value));
         }
@@ -139,12 +206,19 @@ namespace Sudoku
         private int[] GetRow(int rowInd)
             => Enumerable.Range(0, GRID_SIZE).Select(x => solution[rowInd, x]).ToArray();
 
-        private int[] GetSubgrid((int rowInd, int colInd) subgridCoords)
-            => Enumerable.Range(0, GRID_SIZE).
-            Where((rowVal, colVal) =>
-                                     rowVal >= subgridCoords.rowInd && rowVal <= subgridCoords.rowInd + 2 &&
-                                     colVal >= subgridCoords.colInd && colVal <= subgridCoords.colInd + 2).
-            Select((rowVal, colVal) => solution[rowVal, colVal]).ToArray();
+        private List<int> GetSubgrid((int rowInd, int colInd) subgridCoords)
+        {
+            List<int> subgrid = new List<int>();
+
+            for (int i = subgridCoords.rowInd; i < subgridCoords.rowInd + 3; ++i)
+            {
+                for (int j = subgridCoords.colInd; j < subgridCoords.colInd + 3; j++)
+                {
+                    subgrid.Add(solution[i, j]);
+                }
+            }
+            return subgrid;
+        }
 
         private (int, int) GetSubgridCoords(int rowInd, int colInd)
         {

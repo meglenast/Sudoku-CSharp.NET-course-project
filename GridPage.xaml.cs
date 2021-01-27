@@ -23,9 +23,9 @@ namespace Sudoku
         private bool onRedo;
         private SudokuGrid grid;
        
-        public GridPage()
+        public GridPage(Difficulty difficulty)
         {
-            grid = new SudokuGrid();
+            grid = new SudokuGrid(difficulty);
             onRedo = false;
             
             InitializeComponent();
@@ -52,6 +52,9 @@ namespace Sudoku
                     grid.ClearRedoHistory();
                 SetUsersValue(textBox, res);
                 grid.addToHistory();
+
+                if (grid.NumInitValues == 81)
+                    MessageBox.Show("Won");
             }
         }
 
@@ -91,7 +94,7 @@ namespace Sudoku
 
         #endregion
 
-        #region BtnHandlers
+        #region Commands Handlers
 
         //Undo Command
         private void UndoCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -115,15 +118,37 @@ namespace Sudoku
             Redo();
         }
 
-        private void BtnRedo_Click(object sender, RoutedEventArgs e)
+        //Solve Command
+        private void SolveCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            if (grid.Redoable())
-                Redo();
-            else
-                MessageBox.Show("Cant be redo.");
+            //check if valid state!
+            e.CanExecute = true;
         }
 
-        private void BtnSolve_Click(object sender, RoutedEventArgs e)
+        private void SolveCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            Solve();
+        }
+
+        //Save Command
+        private void SaveCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            //check if valid state!
+            e.CanExecute = true;
+        }
+
+        private void SaveCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            Solve();
+        }
+
+
+        private void Save()
+        {
+            ;
+        }
+
+        private void Solve()
         {
             SudokuSolver solver = new SudokuSolver(grid.Grid);
             int[,] solution = solver.GetSolution();
@@ -151,11 +176,6 @@ namespace Sudoku
                 ++col;
             }
         }
-
-        private void BtnSave_Click(object sender, RoutedEventArgs e)
-        {
-
-        } 
         #endregion
 
         #region Undo/Redo
@@ -187,6 +207,8 @@ namespace Sudoku
                 }
                 ++col;
             }
+
+            grid.NumInitValues -= 1;
         }
 
         private void Redo()
@@ -217,6 +239,7 @@ namespace Sudoku
                 }
                 ++col;
             }
+            grid.NumInitValues += 1;
         } 
         #endregion
 

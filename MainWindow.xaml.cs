@@ -39,13 +39,13 @@ namespace Sudoku
             Application.Current.Shutdown();
         }
 
-        /// Undo Command
-        private void EditCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = false;
-        }
+        ///// Undo Command
+        //private void EditCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        //{
+        //    e.CanExecute = false;
+        //}
 
-        private void EditCommand_Executed(object sender, ExecutedRoutedEventArgs e){ }
+        //private void EditCommand_Executed(object sender, ExecutedRoutedEventArgs e){ }
 
         //Solve Command
         private void SolveCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -90,6 +90,7 @@ namespace Sudoku
 
         private void RedoCommand_Executed(object sender, ExecutedRoutedEventArgs e) { }
 
+        
         #endregion
 
     }

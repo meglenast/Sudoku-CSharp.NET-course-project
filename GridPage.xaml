@@ -12,6 +12,9 @@
     <Page.CommandBindings>
         <CommandBinding Command="w:CustomCommands.Undo" CanExecute="UndoCommand_CanExecute" Executed="UndoCommand_Executed"/>
         <CommandBinding Command="w:CustomCommands.Redo" CanExecute="RedoCommand_CanExecute" Executed="RedoCommand_Executed"/>
+        <CommandBinding Command="w:CustomCommands.Solve" CanExecute="SolveCommand_CanExecute" Executed="SolveCommand_Executed"/>
+        <CommandBinding Command="w:CustomCommands.Save" CanExecute="SaveCommand_CanExecute" Executed="SaveCommand_Executed"/>
+
     </Page.CommandBindings>
 
     <Grid>
@@ -151,8 +154,8 @@
             <StackPanel Margin="50,100" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Button x:Name="BtnUndo" Content="Undo" Width="100" Height="45" Margin="10" Command="w:CustomCommands.Undo"/>
                 <Button x:Name="BtnRedo" Content="Redo" Width="100" Height="45" Margin="10" Command="w:CustomCommands.Redo"/>
-                <Button x:Name="BtnSolve" Content="Solve" Width="100" Height="45" Margin="10" Click="BtnSolve_Click"/>
-                <Button x:Name="BtnSave" Content="SaveGame" Width="100" Height="45" Margin="10" Click="BtnSave_Click"/>
+                <Button x:Name="BtnSolve" Content="Solve" Width="100" Height="45" Margin="10" Command="w:CustomCommands.Solve"/>
+                <Button x:Name="BtnSave" Content="SaveGame" Width="100" Height="45" Margin="10" Command="w:CustomCommands.Save"/>
             </StackPanel>
         </StackPanel>
     </Grid>

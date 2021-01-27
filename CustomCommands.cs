@@ -76,8 +76,8 @@ namespace Sudoku
         #region Level Difficulty Commands
         public static readonly RoutedUICommand Easy = new RoutedUICommand
             (
-                "Solve",
-                "Solve",
+                "Easy",
+                "Easy",
                 typeof(CustomCommands)
             //new InputGestureCollection()
             //{
@@ -85,19 +85,41 @@ namespace Sudoku
             //}
             );
 
+        public static readonly RoutedUICommand Medium = new RoutedUICommand
+            (
+                "Medium",
+                "Medium",
+                typeof(CustomCommands)
+            //new InputGestureCollection()
+            //{
+            //	new KeyGesture(Key.F, ModifierKeys.Alt)
+            //}
+            );
+
+        public static readonly RoutedUICommand Hard = new RoutedUICommand
+            (
+                "Hard",
+                "Hard",
+                typeof(CustomCommands)
+            //new InputGestureCollection()
+            //{
+            //	new KeyGesture(Key.F, ModifierKeys.Alt)
+            //}
+            );
         #endregion
 
         public static readonly RoutedUICommand Solve = new RoutedUICommand
 			(
 				"Solve",
 				"Solve",
-				typeof(CustomCommands)
-				//new InputGestureCollection()
-				//{
-				//	new KeyGesture(Key.F, ModifierKeys.Alt)
-				//}
-			);
+				typeof(CustomCommands),
+                new InputGestureCollection()
+                {
+                    new KeyGesture(Key.X, ModifierKeys.Control)
+                }
+            );
 
-		
-	}
+        
+
+    }
 }

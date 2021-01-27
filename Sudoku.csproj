@@ -56,9 +56,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="CustomCommands.cs" />
+    <Compile Include="Difficulty.cs" />
     <Compile Include="GridPage.xaml.cs">
       <DependentUpon>GridPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SudokuGenerator.cs" />
     <Compile Include="SudokuGrid.cs" />
     <Compile Include="SudokuSolver.cs" />
     <Page Include="GridPage.xaml">

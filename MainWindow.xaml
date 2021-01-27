@@ -36,7 +36,6 @@
                 <MenuItem Header="Solve" Command="w:CustomCommands.Solve"/>
                 <MenuItem Header="Stat"/>
             </Menu>
-            <TextBox AcceptsReturn="True" />
         </DockPanel>
 
         <StackPanel x:Name="BtnsMenu" Orientation="Horizontal" VerticalAlignment="Top" Margin="10,50,0,0">
