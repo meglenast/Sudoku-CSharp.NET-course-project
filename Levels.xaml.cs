@@ -25,11 +25,25 @@ namespace Sudoku
             InitializeComponent();
         }
 
-        private void BtnEasyDifficulty_Click(object sender, RoutedEventArgs e)
+        //private void BtnEasyDifficulty_Click(object sender, RoutedEventArgs e)
+        //{
+        //    BtnsLevels.Visibility = Visibility.Hidden;
+        //    LevelsFrame.NavigationUIVisibility = NavigationUIVisibility.Hidden;
+        //    LevelsFrame.Content = new GridPage();
+        //}
+
+        //Easy Difficulty Command
+        private void EasyCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void EasyCommand_Executed(object sender, ExecutedRoutedEventArgs e) 
         {
             BtnsLevels.Visibility = Visibility.Hidden;
             LevelsFrame.NavigationUIVisibility = NavigationUIVisibility.Hidden;
             LevelsFrame.Content = new GridPage();
         }
+
     }
 }

@@ -25,11 +25,72 @@ namespace Sudoku
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        
+        #region Commands Handlers
+
+        /// Quit Command
+        private void QuitCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void QuitCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        /// Undo Command
+        private void EditCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = false;
+        }
+
+        private void EditCommand_Executed(object sender, ExecutedRoutedEventArgs e){ }
+
+        //Solve Command
+        private void SolveCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = false;
+        }
+
+        private void SolveCommand_Executed(object sender, ExecutedRoutedEventArgs e) { }
+
+        //Load New Game Command
+        private void LoadNewGameCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void LoadNewGameCommand_Executed(object sender, ExecutedRoutedEventArgs e) 
         {
             BtnsMenu.Visibility = Visibility.Hidden;
             Main.NavigationUIVisibility = NavigationUIVisibility.Hidden;
             Main.Content = new Levels();
         }
+        
+        //Save Game Command
+        private void SaveCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = false;
+        }
+
+        private void SaveCommand_Executed(object sender, ExecutedRoutedEventArgs e) { }
+
+        private void UndoCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = false;
+        }
+
+        private void UndoCommand_Executed(object sender, ExecutedRoutedEventArgs e){ }
+
+        private void RedoCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = false;
+        }
+
+        private void RedoCommand_Executed(object sender, ExecutedRoutedEventArgs e) { }
+
+        #endregion
+
     }
 }

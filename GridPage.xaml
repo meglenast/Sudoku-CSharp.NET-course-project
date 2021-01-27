@@ -4,9 +4,15 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Sudoku"
+      xmlns:w="clr-namespace:Sudoku"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Grid">
+
+    <Page.CommandBindings>
+        <CommandBinding Command="w:CustomCommands.Undo" CanExecute="UndoCommand_CanExecute" Executed="UndoCommand_Executed"/>
+        <CommandBinding Command="w:CustomCommands.Redo" CanExecute="RedoCommand_CanExecute" Executed="RedoCommand_Executed"/>
+    </Page.CommandBindings>
 
     <Grid>
         <StackPanel Orientation="Horizontal">
@@ -143,8 +149,8 @@
                 <TextBox x:Name="TxtBox_88" Grid.Row="8" Grid.Column="8" Style="{StaticResource CellStyle}" BorderThickness="1,1,3,3"   TextChanged="TxtBoxChanged"/>
             </Grid>
             <StackPanel Margin="50,100" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Button x:Name="BtnUndo" Content="Undo" Width="100" Height="45" Margin="10" Click="BtnUndo_Click"/>
-                <Button x:Name="BtnRedo" Content="Redo" Width="100" Height="45" Margin="10" Click="BtnRedo_Click"/>
+                <Button x:Name="BtnUndo" Content="Undo" Width="100" Height="45" Margin="10" Command="w:CustomCommands.Undo"/>
+                <Button x:Name="BtnRedo" Content="Redo" Width="100" Height="45" Margin="10" Command="w:CustomCommands.Redo"/>
                 <Button x:Name="BtnSolve" Content="Solve" Width="100" Height="45" Margin="10" Click="BtnSolve_Click"/>
                 <Button x:Name="BtnSave" Content="SaveGame" Width="100" Height="45" Margin="10" Click="BtnSave_Click"/>
             </StackPanel>

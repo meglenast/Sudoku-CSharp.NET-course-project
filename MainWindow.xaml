@@ -4,13 +4,46 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Sudoku"
+        xmlns:w="clr-namespace:Sudoku"
         mc:Ignorable="d"
        Title="MainWindow" Height="700" Width="750">
+
+    <Window.CommandBindings>
+        <CommandBinding Command="w:CustomCommands.Quit" CanExecute="QuitCommand_CanExecute" Executed="QuitCommand_Executed"/>
+        <CommandBinding Command="w:CustomCommands.Solve" CanExecute="SolveCommand_CanExecute" Executed="SolveCommand_Executed"/>
+        <CommandBinding Command="w:CustomCommands.LoadNewGame" CanExecute="LoadNewGameCommand_CanExecute" Executed="LoadNewGameCommand_Executed"/>
+        <CommandBinding Command="w:CustomCommands.Save" CanExecute="SaveCommand_CanExecute" Executed="SaveCommand_Executed"/>
+        <CommandBinding Command="w:CustomCommands.Undo" CanExecute="UndoCommand_CanExecute" Executed="UndoCommand_Executed"/>
+        <CommandBinding Command="w:CustomCommands.Redo" CanExecute="RedoCommand_CanExecute" Executed="RedoCommand_Executed"/>
+    </Window.CommandBindings>
+
     <Grid>
-        <StackPanel x:Name="BtnsMenu" Orientation="Horizontal" VerticalAlignment="Top" Margin="10,0,0,0">
-            <Button x:Name="BtnNewGame" Content="NewGame" Margin="10" Click="Button_Click"/>
+        <DockPanel>
+            <Menu DockPanel.Dock="Top" x:Name="MenuCntl">
+                <MenuItem Header="Game">
+                    <MenuItem Header="Load Game" >
+                        <MenuItem Header= "New Game" Command="w:CustomCommands.LoadNewGame"/>
+                        <MenuItem Header= "Saved Game" />
+                    </MenuItem>
+                    <MenuItem Header="Save" Command="w:CustomCommands.Save"/>
+                    <Separator />
+                    <MenuItem Header="Quit"  Command="w:CustomCommands.Quit"/>
+                </MenuItem>
+                <MenuItem Header="Edit">
+                    <MenuItem Header="Undo" Command="w:CustomCommands.Undo"/>
+                    <MenuItem Header="Redo" Command="w:CustomCommands.Redo"/>
+                </MenuItem>
+                <MenuItem Header="Solve" Command="w:CustomCommands.Solve"/>
+                <MenuItem Header="Stat"/>
+            </Menu>
+            <TextBox AcceptsReturn="True" />
+        </DockPanel>
+
+        <StackPanel x:Name="BtnsMenu" Orientation="Horizontal" VerticalAlignment="Top" Margin="10,50,0,0">
+            <Button x:Name="BtnNewGame" Content="NewGame" Margin="10" Command="w:CustomCommands.LoadNewGame"/>
             <Button x:Name="BtnLoadGame" Content="LoadGame" Margin="10"/>
             <Button x:Name="BtnHighScore" Content="HighScore" Margin="10"/>
+            <Button x:Name="BtnQuit" Content="Quit" Margin="10" Command="w:CustomCommands.Quit" />
         </StackPanel>
         <Frame x:Name="Main" Margin="0,60,0,0">
         </Frame>

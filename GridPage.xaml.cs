@@ -20,14 +20,19 @@ namespace Sudoku
     /// </summary>
     public partial class GridPage : Page
     {
+        private bool onRedo;
         private SudokuGrid grid;
+       
         public GridPage()
         {
             grid = new SudokuGrid();
+            onRedo = false;
+            
             InitializeComponent();
             Loaded += MainPageLoaded;
         }
 
+        #region EventHandlers
         private void TxtBoxChanged(object sender, TextChangedEventArgs e)
         {
             TextBox textBox = (TextBox)sender;
@@ -43,54 +48,13 @@ namespace Sudoku
             }
             else
             {
+                if (!onRedo)
+                    grid.ClearRedoHistory();
                 SetUsersValue(textBox, res);
                 grid.addToHistory();
             }
         }
 
-        private void SetUsersValue(TextBox textBox, int res)
-        {
-            (int row, int col) coordinates = GetBoxCoordinatesByName(textBox);
-
-            if (int.TryParse(textBox.Text, out int result))
-            {
-                grid[coordinates.row, coordinates.col] = result;
-            }
-            else
-            {
-                grid[coordinates.row, coordinates.col] = 0;
-            }
-            //grid[coordinates.row, coordinates.col] = Int32.Parse(textBox.Text);
-
-            if (res == 0)
-            {
-                textBox.Text = string.Empty;
-                textBox.IsReadOnly = false;
-                textBox.Background = Brushes.Transparent;
-                grid[coordinates.row, coordinates.col] = 0;
-                return;
-            }
-            if (grid.AcceptableValue(coordinates.row, coordinates.col))
-            {
-                textBox.Text = res.ToString();
-                textBox.IsReadOnly = true;
-            }
-            else
-            {
-                textBox.Text = res.ToString();
-                textBox.IsReadOnly = true;
-                textBox.Background = Brushes.IndianRed;
-                //grid[coordinates.row, coordinates.col] = 0;
-                //textBox.Text = string.Empty;
-            }
-        }
-
-        private static (int, int) GetBoxCoordinatesByName(TextBox textBox)
-        {
-            int row = Int32.Parse((textBox.Name[7]).ToString());
-            int col = Int32.Parse((textBox.Name[8]).ToString());
-            return (row, col);
-        }
 
         void MainPageLoaded(object sender, RoutedEventArgs e)
         {
@@ -125,25 +89,30 @@ namespace Sudoku
             grid.addToHistory();
         }
 
-        List<TextBox> AllTextBoxes(DependencyObject parent)
+        #endregion
+
+        #region BtnHandlers
+
+        //Undo Command
+        private void UndoCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            var list = new List<TextBox>();
-            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
-            {
-                var child = VisualTreeHelper.GetChild(parent, i);
-                if (child is TextBox)
-                    list.Add(child as TextBox);
-                list.AddRange(AllTextBoxes(child));
-            }
-            return list;
+            e.CanExecute = grid.Undoable();
         }
 
-        private void BtnUndo_Click(object sender, RoutedEventArgs e)
+        private void UndoCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if (grid.Undoable())
-                Undo();
-            else
-                MessageBox.Show("Cant be undo.");
+            Undo();
+        }
+
+        //Undo Command
+        private void RedoCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = grid.Redoable();
+        }
+
+        private void RedoCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            Redo();
         }
 
         private void BtnRedo_Click(object sender, RoutedEventArgs e)
@@ -152,67 +121,6 @@ namespace Sudoku
                 Redo();
             else
                 MessageBox.Show("Cant be redo.");
-        }
-
-        private void Undo()
-        {
-            int[,] prev = grid.getPreviousGrid();
-            List<TextBox> curr = AllTextBoxes(this);
-
-            int col = 0;
-            int row = 0;
-
-            foreach (var textBox in curr)
-            {
-                if (col == 9)
-                {
-                    col = 0;
-                    row++;
-                }
-                if (row == 9)
-                {
-                    return;
-                }
-                if (int.TryParse(textBox.Text, out int res) && res != prev[row, col] && prev[row, col] == 0)
-                {
-                    SetUsersValue(textBox, 0);
-                    return;
-                }
-                ++col;
-            }
-        }
-
-        private void Redo()
-        {
-            int[,] redoGrid = grid.GetRedoGrid();
-            List<TextBox> curr = AllTextBoxes(this);
-
-            int col = 0;
-            int row = 0;
-
-            foreach (var textBox in curr)
-            {
-                if (col == 9)
-                {
-                    col = 0;
-                    row++;
-                }
-                if (row == 9)
-                {
-                    return;
-                }
-                if ((int.TryParse(textBox.Text, out int res) && res != redoGrid[row, col]) || (textBox.Text == string.Empty && redoGrid[row, col] != 0))
-                {
-                    SetUsersValue(textBox, redoGrid[row, col]);
-                    return;
-                }
-                ++col;
-            }
-        }
-
-        private void BtnSave_Click(object sender, RoutedEventArgs e)
-        {
-
         }
 
         private void BtnSolve_Click(object sender, RoutedEventArgs e)
@@ -242,12 +150,139 @@ namespace Sudoku
                 }
                 ++col;
             }
-
         }
+
+        private void BtnSave_Click(object sender, RoutedEventArgs e)
+        {
+
+        } 
+        #endregion
+
+        #region Undo/Redo
+        private void Undo()
+        {
+            int[,] prev = grid.getPreviousGrid();
+            List<TextBox> curr = AllTextBoxes(this);
+
+            int col = 0;
+            int row = 0;
+
+            foreach (var textBox in curr)
+            {
+                if (col == 9)
+                {
+                    col = 0;
+                    row++;
+                }
+                if (row == 9)
+                {
+                    return;
+                }
+                if (int.TryParse(textBox.Text, out int res) && res != prev[row, col] && prev[row, col] == 0)
+                {
+                    onRedo = true;
+                    SetUsersValue(textBox, 0);
+                    onRedo = false;
+                    return;
+                }
+                ++col;
+            }
+        }
+
+        private void Redo()
+        {
+            int[,] redoGrid = grid.GetRedoGrid();
+            List<TextBox> curr = AllTextBoxes(this);
+
+            int col = 0;
+            int row = 0;
+
+            foreach (var textBox in curr)
+            {
+                if (col == 9)
+                {
+                    col = 0;
+                    row++;
+                }
+                if (row == 9)
+                {
+                    return;
+                }
+                if ((int.TryParse(textBox.Text, out int res) && res != redoGrid[row, col]) || (textBox.Text == string.Empty && redoGrid[row, col] != 0))
+                {
+                    onRedo = true;
+                    SetUsersValue(textBox, redoGrid[row, col]);
+                    onRedo = false;
+                    //return;
+                }
+                ++col;
+            }
+        } 
+        #endregion
+
+        #region private
         private void SetSolutionValue(TextBox textBox, string value)
         {
             textBox.Text = value;
             textBox.Background = Brushes.PaleVioletRed;
+        }
+
+       private void SetUsersValue(TextBox textBox, int res)
+        {
+            (int row, int col) coordinates = GetBoxCoordinatesByName(textBox);
+
+            //if (int.TryParse(textBox.Text, out int result))
+            //{
+            //    grid[coordinates.row, coordinates.col] = result;
+            //}
+            //else
+            //{
+            //    grid[coordinates.row, coordinates.col] = 0;
+            //}
+
+            grid[coordinates.row, coordinates.col] = res;
+           
+            if (res == 0)
+            {
+                textBox.Text = string.Empty;
+                textBox.IsReadOnly = false;
+                textBox.Background = Brushes.Transparent;
+                grid[coordinates.row, coordinates.col] = 0;
+                return;
+            }
+            if (grid.AcceptableValue(coordinates.row, coordinates.col))
+            {
+                textBox.Text = res.ToString();
+                textBox.IsReadOnly = true;
+            }
+            else
+            {
+                textBox.Text = res.ToString();
+                textBox.IsReadOnly = true;
+                textBox.Background = Brushes.IndianRed;
+                //grid[coordinates.row, coordinates.col] = 0;
+                //textBox.Text = string.Empty;
+            }
+        }
+        private static (int, int) GetBoxCoordinatesByName(TextBox textBox)
+        {
+            int row = Int32.Parse((textBox.Name[7]).ToString());
+            int col = Int32.Parse((textBox.Name[8]).ToString());
+            return (row, col);
+        } 
+        #endregion
+        
+        private List<TextBox> AllTextBoxes(DependencyObject parent)
+        {
+            var list = new List<TextBox>();
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+                if (child is TextBox)
+                    list.Add(child as TextBox);
+                list.AddRange(AllTextBoxes(child));
+            }
+            return list;
         }
 
     }

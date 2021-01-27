@@ -14,7 +14,7 @@ namespace Sudoku
         private Stack<int[,]> redoStackHistory;
         private bool initialize;
         protected int numInitValues;
-        
+
         public SudokuGrid()
         {
             //grid = new int[9][];
@@ -41,25 +41,25 @@ namespace Sudoku
                     //{0,0,0,4,1,9,0,0,5},//4
                     //{0,0,0,0,8,0,0,7,9}//3
 
-                {5,3,4,6,7,0,0,0,0},//3
-                    {6,0,0,1,9,5,3,4,8},//4
-                    {0,9,8,3,4,2,5,6,7},//3
-                    {8,5,9,7,6,1,4,2,3},//3
-                    {4,2,6,8,5,3,7,9,1},//4
-                    {7,1,3,9,2,0,0,0,6},//3
-                    {9,6,1,5,3,7,2,8,4},//3
-                    {2,8,7,4,1,9,6,3,5},//4
-                    {3,4,5,2,8,6,1,7,9}//3
+                //{5,3,4,6,7,0,0,0,0},//3
+                //    {6,0,0,1,9,5,3,4,8},//4
+                //    {0,9,8,3,4,2,5,6,7},//3
+                //    {8,5,9,7,6,1,4,2,3},//3
+                //    {4,2,6,8,5,3,7,9,1},//4
+                //    {7,1,3,9,2,0,0,0,6},//3
+                //    {9,6,1,5,3,7,2,8,4},//3
+                //    {2,8,7,4,1,9,6,3,5},//4
+                //    {3,4,5,2,8,6,1,7,9}//3
 
-                //{5,0,0,0,0,0,0,0,0},
-                //{0,0,0,0,0,0,0,0,0},
-                //{0,0,0,0,0,0,0,0,0},
-                //{0,0,0,0,0,0,0,0,0},
-                //{0,0,0,0,0,0,0,0,0},
-                //{0,0,0,0,0,0,0,0,0},
-                //{0,0,0,0,0,0,0,0,0},
-                //{0,0,0,0,0,0,0,0,0},
-                //{0,0,0,0,0,0,0,0,0}
+                {5,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0}
             };
             SetNumInitValues();
             undoStackHistory = new Stack<int[,]>();
@@ -68,8 +68,8 @@ namespace Sudoku
 
         #region Properties
 
-        public int[,] Grid 
-        { 
+        public int[,] Grid
+        {
             get
             {
                 int[,] res = new int[GRID_SIZE, GRID_SIZE];
@@ -79,10 +79,15 @@ namespace Sudoku
                     for (int col = 0; col < GRID_SIZE; col++)
                     {
                         res[row, col] = grid[row, col];
+
                     }
                 }
                 return res;
             }
+        }
+        public int NumInitValues
+        {
+            get => numInitValues;
         }
 
 
@@ -95,6 +100,7 @@ namespace Sudoku
                 if ((indexRow >= 0 && indexRow <= GRID_SIZE - 1) && (indexCol >= 0 && indexCol <= GRID_SIZE - 1))
                 {
                     return grid[indexRow, indexCol];
+
                 }
                 else
                 {
@@ -106,6 +112,14 @@ namespace Sudoku
                 if ((indexRow >= 0 && indexRow <= GRID_SIZE - 1) && (indexCol >= 0 && indexCol <= GRID_SIZE - 1))
                 {
                     grid[indexRow, indexCol] = value;
+
+                    if (!initialize)
+                    {
+                        if (value == 0)
+                            --numInitValues;
+                        else
+                            ++numInitValues;
+                    }
                 }
                 else
                 {
@@ -235,7 +249,7 @@ namespace Sudoku
             {
                 for (int j = 0; j < GRID_SIZE; j++)
                 {
-                    if (grid[i,j] != 0)
+                    if (grid[i, j] != 0)
                     {
                         ++cnt;
                     }
@@ -243,5 +257,11 @@ namespace Sudoku
             }
             numInitValues = cnt;
         }
+
+        public void ClearRedoHistory()
+        {
+            redoStackHistory.Clear();
+        }
+
     }
 }
