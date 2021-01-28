@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -20,16 +21,30 @@ namespace Sudoku
     /// </summary>
     public partial class GridPage : Page
     {
+        #region Fields
+
         private bool onRedo;
         private SudokuGrid grid;
-       
+        private TimeTracker timeTracker;
+        internal static GridPage page;
+
+        #endregion
         public GridPage(Difficulty difficulty)
         {
+
             grid = new SudokuGrid(difficulty);
+            page = this;
+            timeTracker = new TimeTracker();
             onRedo = false;
-            
+
             InitializeComponent();
+            
             Loaded += MainPageLoaded;
+        }
+
+        public string TimeTracker
+        {
+            set { Dispatcher.Invoke(new Action(() => { LblTimer.Text = value; })); }
         }
 
         #region EventHandlers
@@ -240,7 +255,7 @@ namespace Sudoku
                 ++col;
             }
             grid.NumInitValues += 1;
-        } 
+        }
         #endregion
 
         #region private
@@ -250,7 +265,7 @@ namespace Sudoku
             textBox.Background = Brushes.PaleVioletRed;
         }
 
-       private void SetUsersValue(TextBox textBox, int res)
+        private void SetUsersValue(TextBox textBox, int res)
         {
             (int row, int col) coordinates = GetBoxCoordinatesByName(textBox);
 
@@ -264,7 +279,7 @@ namespace Sudoku
             //}
 
             grid[coordinates.row, coordinates.col] = res;
-           
+
             if (res == 0)
             {
                 textBox.Text = string.Empty;
@@ -292,9 +307,9 @@ namespace Sudoku
             int row = Int32.Parse((textBox.Name[7]).ToString());
             int col = Int32.Parse((textBox.Name[8]).ToString());
             return (row, col);
-        } 
+        }
         #endregion
-        
+
         private List<TextBox> AllTextBoxes(DependencyObject parent)
         {
             var list = new List<TextBox>();

@@ -19,6 +19,9 @@
 
     <Grid>
         <StackPanel Orientation="Horizontal">
+
+            <TextBlock x:Name="LblTimer" Text="00:00:00" Height="20" VerticalAlignment="Top"/>
+
             <!--Sudoku grid-->
             <Grid x:Name="Grid" Margin="50,50,0,0" Height ="405" Width="405">
                 <Grid.Resources>

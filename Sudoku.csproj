@@ -63,6 +63,7 @@
     <Compile Include="SudokuGenerator.cs" />
     <Compile Include="SudokuGrid.cs" />
     <Compile Include="SudokuSolver.cs" />
+    <Compile Include="TimeTracker.cs" />
     <Page Include="GridPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
