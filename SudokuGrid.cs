@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Sudoku
 {
+    [Serializable]
     class SudokuGrid
     {
         protected static readonly int GRID_SIZE = 9;

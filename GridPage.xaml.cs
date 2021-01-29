@@ -29,6 +29,7 @@ namespace Sudoku
         internal static GridPage page;
 
         #endregion
+
         public GridPage(Difficulty difficulty)
         {
 
@@ -42,12 +43,13 @@ namespace Sudoku
             Loaded += MainPageLoaded;
         }
 
+        #region EventHandlers
+        
         public string TimeTracker
         {
             set { Dispatcher.Invoke(new Action(() => { LblTimer.Text = value; })); }
         }
 
-        #region EventHandlers
         private void TxtBoxChanged(object sender, TextChangedEventArgs e)
         {
             TextBox textBox = (TextBox)sender;
@@ -154,13 +156,26 @@ namespace Sudoku
 
         private void SaveCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            Solve();
+            
+            Save();
         }
 
 
         private void Save()
         {
-            ;
+            SaveGameWindow sw = new SaveGameWindow();
+            sw.ShowDialog();
+
+            string name = sw.SaveGameName;
+
+            if (name is null || name == string.Empty)
+            {
+                MessageBox.Show("Invalid name");
+                return;
+            }
+
+            SavedGamesRecord savedGames = new SavedGamesRecord(name, grid);
+            savedGames.Save();
         }
 
         private void Solve()
