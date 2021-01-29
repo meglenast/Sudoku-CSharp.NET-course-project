@@ -33,6 +33,17 @@ namespace Sudoku
                 }
             );
 
+        public static readonly RoutedUICommand LoadSavedGame = new RoutedUICommand
+            (
+                "LoadSavedGame",
+                "LoadSavedGame",
+                typeof(CustomCommands),
+                new InputGestureCollection()
+                {
+                    new KeyGesture(Key.M, ModifierKeys.Control)
+                }
+            );
+
         public static readonly RoutedUICommand Save = new RoutedUICommand
             (
                 "Save",

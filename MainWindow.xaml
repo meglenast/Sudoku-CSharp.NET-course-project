@@ -12,6 +12,7 @@
         <CommandBinding Command="w:CustomCommands.Quit" CanExecute="QuitCommand_CanExecute" Executed="QuitCommand_Executed"/>
         <CommandBinding Command="w:CustomCommands.Solve" CanExecute="SolveCommand_CanExecute" Executed="SolveCommand_Executed"/>
         <CommandBinding Command="w:CustomCommands.LoadNewGame" CanExecute="LoadNewGameCommand_CanExecute" Executed="LoadNewGameCommand_Executed"/>
+        <CommandBinding Command="w:CustomCommands.LoadSavedGame" CanExecute="LoadSavedGameCommand_CanExecute" Executed="LoadSavedGameCommand_Executed"/>
         <CommandBinding Command="w:CustomCommands.Save" CanExecute="SaveCommand_CanExecute" Executed="SaveCommand_Executed"/>
         <CommandBinding Command="w:CustomCommands.Undo" CanExecute="UndoCommand_CanExecute" Executed="UndoCommand_Executed"/>
         <CommandBinding Command="w:CustomCommands.Redo" CanExecute="RedoCommand_CanExecute" Executed="RedoCommand_Executed"/>
@@ -23,7 +24,7 @@
                 <MenuItem Header="Game">
                     <MenuItem Header="Load Game" >
                         <MenuItem Header= "New Game" Command="w:CustomCommands.LoadNewGame"/>
-                        <MenuItem Header= "Saved Game" />
+                        <MenuItem Header= "Saved Game" Command="w:CustomCommands.LoadSavedGame"/>
                     </MenuItem>
                     <MenuItem Header="Save" Command="w:CustomCommands.Save"/>
                     <Separator />
@@ -40,7 +41,7 @@
 
         <StackPanel x:Name="BtnsMenu" Orientation="Horizontal" VerticalAlignment="Top" Margin="10,50,0,0">
             <Button x:Name="BtnNewGame" Content="NewGame" Margin="10" Command="w:CustomCommands.LoadNewGame"/>
-            <Button x:Name="BtnLoadGame" Content="LoadGame" Margin="10"/>
+            <Button x:Name="BtnLoadGame" Content="LoadGame" Margin="10" Command="w:CustomCommands.LoadSavedGame"/>
             <Button x:Name="BtnHighScore" Content="HighScore" Margin="10"/>
             <Button x:Name="BtnQuit" Content="Quit" Margin="10" Command="w:CustomCommands.Quit" />
         </StackPanel>

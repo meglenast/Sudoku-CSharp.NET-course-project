@@ -67,7 +67,7 @@ namespace Sudoku
         {
             try
             {
-                FileStream writeFileStream = new FileStream(FILE_NAME_SAVED_GAMES, FileMode.Append, FileAccess.Write);
+                FileStream writeFileStream = new FileStream(FILE_NAME_SAVED_GAMES,FileMode.Append, FileAccess.Write);
 
                 formatter.Serialize(writeFileStream, gamesDictionary);
                 writeFileStream.Close();
@@ -83,6 +83,14 @@ namespace Sudoku
             return gamesDictionary;
         }
 
+        public SudokuGrid LoadByName(string selectedGame)
+        {
+            Load();
+            SudokuGrid gameToLoad = new SudokuGrid(Difficulty.Easy);
+            gamesDictionary.TryGetValue(selectedGame, out gameToLoad);
+            return gameToLoad;
+        }
+
         #endregion
         private void Deserialize()
         {
@@ -91,7 +99,21 @@ namespace Sudoku
                 try
                 {
                     FileStream readFileStream = new FileStream(FILE_NAME_SAVED_GAMES, FileMode.Open, FileAccess.Read);
-                    gamesDictionary = (Dictionary<String, SudokuGrid>)formatter.Deserialize(readFileStream);
+                    //readFileStream.Seek(0, SeekOrigin.Begin);
+                    //long len = readFileStream.Length;
+                    //gamesDictionary = (Dictionary<String, SudokuGrid>)formatter.Deserialize(readFileStream);
+                    //long pos = readFileStream.Position;
+                    //gamesDictionary = (Dictionary<String, SudokuGrid>)formatter.Deserialize(readFileStream);
+                    //pos = readFileStream.Position;
+
+
+                    while (readFileStream.Position != readFileStream.Length)
+                    {
+                        Dictionary<String, SudokuGrid>saved = (Dictionary<String, SudokuGrid>)formatter.Deserialize(readFileStream);
+                        var first = saved.First();
+                        gamesDictionary.Add(first.Key,first.Value);
+                    }
+
                     readFileStream.Close();
                 }
                 catch (Exception)

@@ -30,6 +30,21 @@ namespace Sudoku
 
         #endregion
 
+        public GridPage(string selectedGame)
+        {
+            SavedGamesRecord savedGames = new SavedGamesRecord();
+            grid = savedGames.LoadByName(selectedGame);
+            //grid = new SudokuGrid(difficulty);
+
+            page = this;
+            timeTracker = new TimeTracker();
+            onRedo = false;
+
+            InitializeComponent();
+
+            Loaded += MainPageLoaded;
+        }
+
         public GridPage(Difficulty difficulty)
         {
 

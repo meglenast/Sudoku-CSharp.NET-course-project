@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -67,7 +68,18 @@ namespace Sudoku
             Main.NavigationUIVisibility = NavigationUIVisibility.Hidden;
             Main.Content = new Levels();
         }
-        
+        //Load Saved Game Command
+        private void LoadSavedGameCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void LoadSavedGameCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            // BtnsMenu.Visibility = Visibility.Hidden;
+            // Main.NavigationUIVisibility = NavigationUIVisibility.Hidden;
+            Load();
+        }
         //Save Game Command
         private void SaveCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
@@ -93,5 +105,15 @@ namespace Sudoku
         
         #endregion
 
+        private void Load()
+        {
+            BtnsMenu.Visibility = Visibility.Hidden;
+            Main.NavigationUIVisibility = NavigationUIVisibility.Hidden;
+            Main.Content = new LoadSavedGamePage();
+
+
+        }
+
+      
     }
 }
