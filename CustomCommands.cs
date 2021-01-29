@@ -82,6 +82,17 @@ namespace Sudoku
                 new KeyGesture(Key.Y, ModifierKeys.Control)
             }
             );
+
+        public static readonly RoutedUICommand Reset = new RoutedUICommand
+            (
+                "Reset",
+                "Reset",
+                typeof(CustomCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.N, ModifierKeys.Control)
+            }
+            );
         #endregion
 
         #region Level Difficulty Commands

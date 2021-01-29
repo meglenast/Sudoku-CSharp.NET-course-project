@@ -10,7 +10,8 @@ namespace Sudoku
     class SudokuGrid
     {
         protected static readonly int GRID_SIZE = 9;
-        protected int[,] grid;
+        private int[,] grid;
+        private int[,] originalSudokuGrid;
         private Stack<int[,]> undoStackHistory;
         private Stack<int[,]> redoStackHistory;
         private bool initialize;
@@ -21,48 +22,8 @@ namespace Sudoku
             initialize = true;
             SudokuGenerator sudokuGenerator = new SudokuGenerator(difficulty);
             grid = sudokuGenerator.SudokuPuzzle;
-            //grid = new int[,]
-            //{
-            //        //{5,3,0,0,7,0,0,0,0},//3
-            //        //{6,0,0,1,9,5,0,0,0},//4
-            //        //{0,9,8,0,0,0,0,6,0},//3
-            //        //{8,0,0,0,6,0,0,0,3},//3
-            //        //{4,0,0,8,0,3,0,0,1},//4
-            //        //{7,0,0,0,2,0,0,0,6},//3
-            //        //{0,6,0,0,0,0,2,8,0},//3
-            //        //{0,0,0,4,1,9,0,0,5},//4
-            //        //{0,0,0,0,8,0,0,7,9}//3
-
-            //        //{5,3,4,6,7,0,0,0,0},//3
-            //        //{6,7,2,1,9,5,3,4,8},//4
-            //        //{1,9,8,3,4,2,5,6,7},//3
-            //        //{8,5,9,7,6,1,4,2,3},//3
-            //        //{4,2,6,8,5,3,7,9,1},//4
-            //        //{7,1,3,9,2,4,8,5,6},//3
-            //        //{9,6,1,5,3,7,2,8,4},//3
-            //        //{2,8,7,4,1,9,6,3,5},//4
-            //        //{3,4,5,2,8,6,1,7,9}//3
-
-            //    //{0,0,0,0,0,0,0,0,0},
-            //    //{0,0,0,0,0,0,0,0,0},
-            //    //{0,0,0,0,0,0,0,0,0},
-            //    //{0,0,0,0,0,0,0,0,0},
-            //    //{0,0,0,0,0,0,0,0,0},
-            //    //{0,0,0,0,0,0,0,0,0},
-            //    //{0,0,0,0,0,0,0,0,0},
-            //    //{0,0,0,0,0,0,0,0,0},
-            //    //{0,0,0,0,0,0,0,0,0}
-            
-            //    //{0,0,0,0,0,0,0,0,0},
-            //    //{0,0,0,0,0,3,0,8,5},
-            //    //{0,0,1,0,2,0,0,0,0},
-            //    //{0,0,0,5,0,7,0,0,0},
-            //    //{0,0,4,0,0,0,1,0,0},
-            //    //{0,9,0,0,0,0,0,0,0},
-            //    //{5,0,0,0,0,0,0,7,3},
-            //    //{0,0,2,0,1,0,0,0,0},
-            //    //{0,0,0,0,4,0,0,0,9}
-            //};
+            originalSudokuGrid = new int[GRID_SIZE, GRID_SIZE];
+            Array.Copy(grid,originalSudokuGrid,81);
             SetNumInitValues();
             undoStackHistory = new Stack<int[,]>();
             redoStackHistory = new Stack<int[,]>();
@@ -134,6 +95,17 @@ namespace Sudoku
                 }
             }
         }
+
+        public int[,] OriginalSudokuGrid
+        {
+            get 
+            {
+                int[,] res = new int[GRID_SIZE,GRID_SIZE];
+                Array.Copy(originalSudokuGrid, res, GRID_SIZE * GRID_SIZE);
+                return res;
+            }
+        }
+
         #endregion
 
         #region ValidityChecks
@@ -246,6 +218,25 @@ namespace Sudoku
             temp = redoStackHistory.Pop();
             return temp;
         }
+        public void ClearRedoHistory()
+        {
+            redoStackHistory.Clear();
+        }
+
+        public void Reset()
+        {
+            for (int i = 0; i < GRID_SIZE; i++)
+            {
+                for (int j = 0; j < GRID_SIZE; j++)
+                {
+                    grid[i, j] = originalSudokuGrid[i, j];
+                }
+            }
+            undoStackHistory.Clear();
+            redoStackHistory.Clear();
+            undoStackHistory.Push(originalSudokuGrid);
+            SetNumInitValues();
+        }
         #endregion
 
         private void SetNumInitValues()
@@ -265,10 +256,6 @@ namespace Sudoku
             numInitValues = cnt;
         }
 
-        public void ClearRedoHistory()
-        {
-            redoStackHistory.Clear();
-        }
 
     }
 }

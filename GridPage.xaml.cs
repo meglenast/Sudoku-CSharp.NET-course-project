@@ -139,7 +139,7 @@ namespace Sudoku
             Undo();
         }
 
-        //Undo Command
+        //Redo Command
         private void RedoCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = grid.Redoable();
@@ -148,6 +148,17 @@ namespace Sudoku
         private void RedoCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             Redo();
+        }
+        
+        //Reset Command
+        private void ResetCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = grid.Undoable();
+        }
+
+        private void ResetCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            Reset();
         }
 
         //Solve Command
@@ -171,7 +182,6 @@ namespace Sudoku
 
         private void SaveCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            
             Save();
         }
 
@@ -286,6 +296,42 @@ namespace Sudoku
             }
             grid.NumInitValues += 1;
         }
+
+        private void Reset()
+        {
+            
+            grid.Reset();
+
+            int[,] originalGrid = grid.OriginalSudokuGrid;
+            List<TextBox> curr = AllTextBoxes(this);
+
+            int col = 0;
+            int row = 0;
+
+            foreach (var textBox in curr)
+            {
+                if (col == 9)
+                {
+                    col = 0;
+                    row++;
+                }
+                if (row == 9)
+                {
+                    return;
+                }
+                if ((int.TryParse(textBox.Text, out int res) && res != originalGrid[row, col]) || (textBox.Text == string.Empty && originalGrid[row, col] != 0))
+                {
+                    onRedo = true;
+                    SetUsersValue(textBox, originalGrid[row, col]);
+                    onRedo = false;
+                    //return;
+                }
+                ++col;
+            }
+            grid.NumInitValues += 1;
+
+        }
+
         #endregion
 
         #region private
