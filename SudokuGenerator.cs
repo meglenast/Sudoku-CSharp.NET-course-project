@@ -10,7 +10,7 @@ namespace Sudoku
     {
         #region Fields
         private static readonly int SIZE_GRID = 9;
-        private int[,] sudokuPuzzle;
+        private readonly int[,] sudokuPuzzle;
         private static Difficulty difficulty;
         #endregion
 
@@ -22,18 +22,19 @@ namespace Sudoku
                 int[,] res = new int[SIZE_GRID, SIZE_GRID];
 
                 for (int i = 0; i < SIZE_GRID; i++)
-                {
                     for (int j = 0; j < SIZE_GRID; j++)
-                    {
                         res[i, j] = sudokuPuzzle[i, j];
-                    }
-                }
+
                 return res;
             }
         }
         #endregion
 
-        #region Constructor
+        #region Constructors
+        /// <summary>
+        /// General purpose constructor
+        /// </summary>
+        /// <param name="diff"></param>
         public SudokuGenerator(Difficulty diff)
         {
             sudokuPuzzle = new int[SIZE_GRID, SIZE_GRID];
@@ -45,7 +46,9 @@ namespace Sudoku
         } 
         #endregion
 
-        
+        /// <summary>
+        /// Method that generates a new sudoku puzzle based on sudoku solver algorithm.
+        /// </summary>
         private void GenerateSudoku()
         {
             Random rand = new Random();
@@ -54,14 +57,14 @@ namespace Sudoku
 
             switch (difficulty)
             {
-                case Difficulty.Easy:
+                case Difficulty.EASY:
                     numToErase = rand.Next(27, 36);
-                    //numToErase = rand.Next(1, 2);
+                    //numToErase = rand.Next(2, 3);
                     break;
-                case Difficulty.Medium:
+                case Difficulty.MEDIUM:
                     numToErase = rand.Next(35, 45);
                     break;
-                case Difficulty.Hard:
+                case Difficulty.HARD:
                     numToErase = rand.Next(44, 60);
                     break;
                 default:

@@ -24,15 +24,22 @@ namespace Sudoku
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Method that returns the selected name for the game.
+        /// </summary>
         public string SaveGameName 
         {
             get { return TxtSaveName.Text; }
         }
+
+        /// <summary>
+        /// Method that handles Save button click for the SaveGameWindow.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
-
-       
     }
 }

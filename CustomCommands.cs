@@ -93,6 +93,18 @@ namespace Sudoku
                 new KeyGesture(Key.N, ModifierKeys.Control)
             }
             );
+
+        public static readonly RoutedUICommand Solve = new RoutedUICommand
+            (
+                "Solve",
+                "Solve",
+                typeof(CustomCommands),
+                new InputGestureCollection()
+                {
+                    new KeyGesture(Key.X, ModifierKeys.Control)
+                }
+            );
+
         #endregion
 
         #region Level Difficulty Commands
@@ -101,10 +113,6 @@ namespace Sudoku
                 "Easy",
                 "Easy",
                 typeof(CustomCommands)
-            //new InputGestureCollection()
-            //{
-            //	new KeyGesture(Key.F, ModifierKeys.Alt)
-            //}
             );
 
         public static readonly RoutedUICommand Medium = new RoutedUICommand
@@ -112,10 +120,6 @@ namespace Sudoku
                 "Medium",
                 "Medium",
                 typeof(CustomCommands)
-            //new InputGestureCollection()
-            //{
-            //	new KeyGesture(Key.F, ModifierKeys.Alt)
-            //}
             );
 
         public static readonly RoutedUICommand Hard = new RoutedUICommand
@@ -123,25 +127,14 @@ namespace Sudoku
                 "Hard",
                 "Hard",
                 typeof(CustomCommands)
-            //new InputGestureCollection()
-            //{
-            //	new KeyGesture(Key.F, ModifierKeys.Alt)
-            //}
             );
         #endregion
 
-        public static readonly RoutedUICommand Solve = new RoutedUICommand
-			(
-				"Solve",
-				"Solve",
-				typeof(CustomCommands),
-                new InputGestureCollection()
-                {
-                    new KeyGesture(Key.X, ModifierKeys.Control)
-                }
-            );
-
-        
-
+        public static readonly RoutedUICommand Statistic = new RoutedUICommand
+           (
+               "Statistic",
+               "Statistic",
+               typeof(CustomCommands)
+           );
     }
 }

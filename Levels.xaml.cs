@@ -25,41 +25,71 @@ namespace Sudoku
             InitializeComponent();
         }
 
-        #region Levels Commands Handlers
-        //Easy Difficulty Command
+        #region Command Handlers
+        /// <summary>
+        /// Mehod that checks whether EasyCommmand can be executed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void EasyCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
         }
+
+        /// <summary>
+        /// Method that handles EasyCommmand.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void EasyCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             BtnsLevels.Visibility = Visibility.Hidden;
             LevelsFrame.NavigationUIVisibility = NavigationUIVisibility.Hidden;
-            LevelsFrame.Content = new GridPage(Difficulty.Easy);
+            LevelsFrame.Content = new GridPage(Difficulty.EASY);
         }
 
-        //Medium Difficulty Command
+        /// <summary>
+        /// Mehod that checks whether MediumCommmand can be executed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MediumCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
         }
+
+        /// <summary>
+        /// Method that handles MediumCommmand.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MediumCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             BtnsLevels.Visibility = Visibility.Hidden;
             LevelsFrame.NavigationUIVisibility = NavigationUIVisibility.Hidden;
-            LevelsFrame.Content = new GridPage(Difficulty.Medium);
+            LevelsFrame.Content = new GridPage(Difficulty.MEDIUM);
         }
 
-        //Hard Difficulty Command
+        /// <summary>
+        /// Mehod that checks whether HardCommmand can be executed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void HardCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
         }
+
+        /// <summary>
+        /// Method that handles HardCommmand.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void HardCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             BtnsLevels.Visibility = Visibility.Hidden;
             LevelsFrame.NavigationUIVisibility = NavigationUIVisibility.Hidden;
-            LevelsFrame.Content = new GridPage(Difficulty.Hard);
+            LevelsFrame.Content = new GridPage(Difficulty.HARD);
         } 
         #endregion
     }

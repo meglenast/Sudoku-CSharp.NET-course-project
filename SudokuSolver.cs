@@ -14,6 +14,10 @@ namespace Sudoku
         #endregion
 
         #region Constructors
+        /// <summary>
+        /// General purpose constructor
+        /// </summary>
+        /// <param name="grid"></param>
         public SudokuSolver(int[,] grid)
         {
             Solution = grid;
@@ -39,24 +43,16 @@ namespace Sudoku
                 }
             }
         }
-
         #endregion
-        private bool CheckFilled()
-        {
-            for (int i = 0; i < GRID_SIZE; i++)
-            {
-                for (int j = 0; j < GRID_SIZE; j++)
-                {
-                    if (solution[i, j] == 0)
-                        return false;
-                }
-            }
-            return true;
-        }
 
+
+        /// <summary>
+        /// Method that returns the sudoku solution.
+        /// </summary>
+        /// <returns></returns>
         public int[,] GetSolution()
         {
-            SolveSudoku1();
+            SolveSudoku();
             int[,] res = new int[GRID_SIZE, GRID_SIZE];
 
             for (int row = 0; row < GRID_SIZE; row++)
@@ -69,7 +65,12 @@ namespace Sudoku
             return res;
         }
 
-        private bool SolveSudoku1()
+        #region Private utillity methods implementing the sudoku solver algorithm
+        /// <summary>
+        /// Method tha timplements the sudoku oslver algorithm.
+        /// </summary>
+        /// <returns></returns>
+        private bool SolveSudoku()
         {
             int row = -1;
             int col = -1;
@@ -100,11 +101,11 @@ namespace Sudoku
 
             List<int> lst = new List<int>();
             Random rand = new Random();
-            
+
             for (int value = 1; value <= GRID_SIZE; value++)
             {
                 int val;
-                while(true)
+                while (true)
                 {
                     val = rand.Next(1, 10);
                     if (!lst.Contains(val))
@@ -119,57 +120,6 @@ namespace Sudoku
                 {
                     solution[row, col] = val;
 
-                    if (SolveSudoku1())
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        solution[row, col] = 0;
-                    }
-                }
-            }
-            return false;
-        }
-
-        private bool SolveSudoku()
-        {
-            int row = -1;
-            int col = -1;
-            bool isEmpty = true;
-
-            for (int currRow = 0; currRow < GRID_SIZE; currRow++)
-            {
-                for (int currCol = 0; currCol < GRID_SIZE; currCol++)
-                {
-                    if (solution[currRow, currCol] == 0)
-                    {
-                        row = currRow;
-                        col = currCol;
-
-                        isEmpty = false;
-                        break;
-                    }
-                }
-                if (!isEmpty)
-                {
-                    break;
-                }
-            }
-            if (isEmpty)
-            {
-                return true;
-            }
-
-
-            for (int value = 1; value <= GRID_SIZE; value++)
-            {
-                
-
-                if (solution[row,col] == 0 && CheckValidMove(row,col,value))
-                {
-                    solution[row, col] = value;
-
                     if (SolveSudoku())
                     {
                         return true;
@@ -183,29 +133,70 @@ namespace Sudoku
             return false;
         }
 
+        /// <summary>
+        /// Method that checks whether the change made to the grid is a valid one.
+        /// </summary>
+        /// <param name="rowInd"></param>
+        /// <param name="colInd"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         private bool CheckValidMove(int rowInd, int colInd, int value)
         {
-            return 
+            return
                     (!CheckRowContains(rowInd, value) &&
                     !CheckColContains(colInd, value) &&
                     !CheckSubgridContains(GetSubgridCoords(rowInd, colInd), value));
         }
 
+        /// <summary>
+        /// Helper method that checks whether a number is containt in a row.
+        /// </summary>
+        /// <param name="rowInd"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         private bool CheckRowContains(int rowInd, int value)
             => GetRow(rowInd).Any(x => x == value);
 
-
+        /// <summary>
+        /// Helper method that checks whether a number is containt in a column.
+        /// </summary>
+        /// <param name="colInd"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         private bool CheckColContains(int colInd, int value)
             => GetCol(colInd).Any(x => x == value);
 
+        /// <summary>
+        /// Helper method that checks whether a number is containt in a subgrid.
+        /// </summary>
+        /// <param name="coords"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         private bool CheckSubgridContains((int, int) coords, int value)
             => GetSubgrid(coords).Any(x => x == value);
 
+        /// <summary>
+        /// Helper method that returns the column refered by an index.
+        /// </summary>
+        /// <param name="colInd"></param>
+        /// <returns></returns>
         private int[] GetCol(int colInd)
             => Enumerable.Range(0, GRID_SIZE).Select(x => solution[x, colInd]).ToArray();
+
+        /// <summary>
+        /// Helper method that returns the row refered by an index.
+        /// </summary>
+        /// <param name="rowInd"></param>
+        /// <returns></returns>
         private int[] GetRow(int rowInd)
             => Enumerable.Range(0, GRID_SIZE).Select(x => solution[rowInd, x]).ToArray();
 
+
+        /// <summary>
+        /// Helper method that returns the subgrid by indexes.
+        /// </summary>
+        /// <param name="subgridCoords"></param>
+        /// <returns></returns>
         private List<int> GetSubgrid((int rowInd, int colInd) subgridCoords)
         {
             List<int> subgrid = new List<int>();
@@ -220,6 +211,12 @@ namespace Sudoku
             return subgrid;
         }
 
+        /// <summary>
+        /// Helper method that gives the starting indexes of the subgrid refered by indexes.
+        /// </summary>
+        /// <param name="rowInd"></param>
+        /// <param name="colInd"></param>
+        /// <returns></returns>
         private (int, int) GetSubgridCoords(int rowInd, int colInd)
         {
             //first row
@@ -243,7 +240,8 @@ namespace Sudoku
                 return (6, 3);
             else
                 return (6, 6);
-        }
+        } 
+        #endregion
 
     }
 }

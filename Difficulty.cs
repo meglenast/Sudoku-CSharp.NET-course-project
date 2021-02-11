@@ -8,8 +8,9 @@ namespace Sudoku
 {
     public enum Difficulty
     {
-        Easy = 5,
-        Medium = 10,
-        Hard = 15
+        EASY = 2,
+        MEDIUM = 3,
+        HARD = 4,
+        LOADED_SUDOKU
     }
 }

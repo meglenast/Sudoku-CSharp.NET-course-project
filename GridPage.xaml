@@ -15,15 +15,12 @@
         <CommandBinding Command="w:CustomCommands.Reset" CanExecute="ResetCommand_CanExecute" Executed="ResetCommand_Executed"/>
         <CommandBinding Command="w:CustomCommands.Solve" CanExecute="SolveCommand_CanExecute" Executed="SolveCommand_Executed"/>
         <CommandBinding Command="w:CustomCommands.Save" CanExecute="SaveCommand_CanExecute" Executed="SaveCommand_Executed"/>
-
     </Page.CommandBindings>
 
-    <Grid>
+    <Grid Background="Lavender">
         <StackPanel Orientation="Horizontal">
-
-            <TextBlock x:Name="LblTimer" Text="00:00:00" Height="20" VerticalAlignment="Top"/>
-
-            <!--Sudoku grid-->
+            <!--Time tracker-->
+            <TextBlock x:Name="LblTimer" Text="00:00:00" Height="30" VerticalAlignment="Top" FontSize="20"/>
             <Grid x:Name="Grid" Margin="50,50,0,0" Height ="405" Width="405">
                 <Grid.Resources>
                     <Style x:Key="CellStyle">
@@ -34,6 +31,7 @@
                         <Setter Property="TextBox.BorderBrush"   Value="Black"/>
                     </Style>
                 </Grid.Resources>
+                <!--Sudoku grid-->
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width ="*"/>
                     <ColumnDefinition Width ="*"/>
@@ -155,11 +153,17 @@
                 <TextBox x:Name="TxtBox_87" Grid.Row="8" Grid.Column="7" Style="{StaticResource CellStyle}" BorderThickness="1,1,1,3"   TextChanged="TxtBoxChanged"/>
                 <TextBox x:Name="TxtBox_88" Grid.Row="8" Grid.Column="8" Style="{StaticResource CellStyle}" BorderThickness="1,1,3,3"   TextChanged="TxtBoxChanged"/>
             </Grid>
-            <StackPanel Margin="50,100" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <!--In game buttons-->
+            <StackPanel Margin="50 100" HorizontalAlignment="Center" VerticalAlignment="Center" Background="Black" >
+                <!--Undo Button-->
                 <Button x:Name="BtnUndo" Content="Undo" Width="100" Height="35" Margin="10" Command="w:CustomCommands.Undo"/>
+                <!--Redo Button-->
                 <Button x:Name="BtnRedo" Content="Redo" Width="100" Height="35" Margin="10" Command="w:CustomCommands.Redo"/>
+                <!--Reset Button-->
                 <Button x:Name="BtnReset" Content="Reset" Width="100" Height="35" Margin="10" Command="w:CustomCommands.Reset"/>
+                <!--Solve Button-->
                 <Button x:Name="BtnSolve" Content="Solve" Width="100" Height="35" Margin="10" Command="w:CustomCommands.Solve"/>
+                <!--Save Button-->
                 <Button x:Name="BtnSave" Content="SaveGame" Width="100" Height="35" Margin="10" Command="w:CustomCommands.Save"/>
             </StackPanel>
         </StackPanel>

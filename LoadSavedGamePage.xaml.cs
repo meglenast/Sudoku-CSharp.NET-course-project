@@ -20,36 +20,39 @@ namespace Sudoku
     /// </summary>
     public partial class LoadSavedGamePage : Page
     {
-        string selectedGame;
-        
+
         public LoadSavedGamePage()
         {
             InitializeComponent();
             LoadSavedGames();
         }
 
-        
-        public string SelectedGame
-        {
-            get { return selectedGame; }
-        }
-
+        /// <summary>
+        /// Method that handles the "Load" button click.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BtnLoad_Click(object sender, RoutedEventArgs e)
         {
-            selectedGame = CmbBoxSavedGames.Text;
-            LoadSelectedGame(selectedGame);
+            LoadSelectedGame(CmbBoxSavedGames.Text);
         }
 
+        /// <summary>
+        /// Method that loads all saved games by the user.
+        /// </summary>
         private void LoadSavedGames()
         {
             SavedGamesRecord savedGames = new SavedGamesRecord();
             Dictionary<string, SudokuGrid> games = savedGames.Load();
 
             foreach (var game in games)
-            {
                 CmbBoxSavedGames.Items.Add(game.Key);
-            }
         }
+
+        /// <summary>
+        /// Method that boots the selected game the user.
+        /// </summary>
+        /// <param name="selectedGame"></param>
         private void LoadSelectedGame(string selectedGame)
         {
             LaodSavedGamePageContent.Visibility = Visibility.Hidden;

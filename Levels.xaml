@@ -15,15 +15,23 @@
         <CommandBinding Command="w:CustomCommands.Hard" CanExecute="HardCommand_CanExecute" Executed="HardCommand_Executed"/>
     </Page.CommandBindings>
 
-    <Grid>
-        <Frame x:Name="LevelsFrame" >
-        </Frame>
-        <StackPanel x:Name="BtnsLevels" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <TextBlock Text="Choose difficulty..." FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Top" Height="50"/>
-            <StackPanel VerticalAlignment="Top"  Orientation="Horizontal" Margin="0,60,0,0">
-                <Button x:Name="BtnEasyDifficulty"   Content="Easy"   Margin="10" Width="100" Height="40" Command="w:CustomCommands.Easy"/>
-                <Button x:Name="BtnMediumDifficulty" Content="Medium" Margin="10" Width="100" Height="40" Command="w:CustomCommands.Medium"/>
-                <Button x:Name="BtnHardDifficulty"   Content="Hard" Margin="10" Width="100" Height="40" Command="w:CustomCommands.Hard"/>
+    <Page.Resources>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Width" Value="100"/>
+        </Style>
+    </Page.Resources>
+
+    <Grid Background="Lavender">
+        <Frame x:Name="LevelsFrame" />
+        <StackPanel x:Name="BtnsLevels" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Background="Black">
+            <TextBlock Text="Choose difficulty..." FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Top" Height="50" Foreground="Lavender"/>
+                <!--Buttons for choosing the level of difficulty-->
+                <StackPanel VerticalAlignment="Top"  Orientation="Horizontal" Margin="0,60,0,0">
+                <Button x:Name="BtnEasyDifficulty"   Content="Easy"     Command="w:CustomCommands.Easy"     Style="{StaticResource ButtonStyle}"/>
+                <Button x:Name="BtnMediumDifficulty" Content="Medium"   Command="w:CustomCommands.Medium"   Style="{StaticResource ButtonStyle}"/>
+                <Button x:Name="BtnHardDifficulty"   Content="Hard"     Command="w:CustomCommands.Hard"     Style="{StaticResource ButtonStyle}"/>
             </StackPanel>
         </StackPanel>
     </Grid>

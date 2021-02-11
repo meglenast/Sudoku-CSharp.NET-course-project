@@ -5,12 +5,29 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Sudoku"
         mc:Ignorable="d"
-        Title="SaveGameWindow" Height="200" Width="250">
+        Title="SaveGame" Height="200" Width="250" WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <Style x:Key="TextStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="Margin" Value="15"/>
+            <Setter Property="Foreground" Value="Lavender"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="Margin" Value="45"/>
+            <Setter Property="Height" Value="25"/>
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+    </Window.Resources>
     <Grid>
-        <StackPanel>
-            <Label Content="Save as: "/>
-            <TextBox x:Name="TxtSaveName"/>
-            <Button Name="BtnSave" Content="Save" Click="BtnSave_Click" />
+        <StackPanel Background="Black">
+            <!--Saving the game as button and Textbox for user's input-->
+            <TextBlock Text="Save game as.." Style="{StaticResource TextStyle}"/>
+            <TextBox x:Name="TxtSaveName" Width="150"/>
+            <Button Name="BtnSave" Content="Save" Style="{StaticResource ButtonStyle}" Click="BtnSave_Click" />
         </StackPanel>
     </Grid>
 </Window>

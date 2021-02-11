@@ -26,29 +26,33 @@ namespace Sudoku
             InitializeComponent();
         }
 
-        
-        #region Commands Handlers
+        #region Custom commands handlers
 
-        /// Quit Command
+        /// <summary>
+        /// Method that checks whether the Quit command can be executed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void QuitCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
         }
-
+        
+        /// <summary>
+        /// Method that handles the Quit command. 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void QuitCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             Application.Current.Shutdown();
         }
 
-        ///// Undo Command
-        //private void EditCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        //{
-        //    e.CanExecute = false;
-        //}
-
-        //private void EditCommand_Executed(object sender, ExecutedRoutedEventArgs e){ }
-
-        //Solve Command
+        /// <summary>
+        /// Method that checks whether the Solve command can be executed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SolveCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = false;
@@ -56,64 +60,126 @@ namespace Sudoku
 
         private void SolveCommand_Executed(object sender, ExecutedRoutedEventArgs e) { }
 
-        //Load New Game Command
+        /// <summary>
+        /// Method that checks  whether the "Load new game" command can be executed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void LoadNewGameCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
         }
 
+        /// <summary>
+        /// Method that handles the "Load new game" command.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void LoadNewGameCommand_Executed(object sender, ExecutedRoutedEventArgs e) 
         {
             BtnsMenu.Visibility = Visibility.Hidden;
             Main.NavigationUIVisibility = NavigationUIVisibility.Hidden;
             Main.Content = new Levels();
         }
-        //Load Saved Game Command
+
+        /// <summary>
+        /// Method that checks  whether the "Load saved game" command can be executed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void LoadSavedGameCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
         }
 
+        /// <summary>
+        /// Mthod that handles the "Load saved game" command.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void LoadSavedGameCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            // BtnsMenu.Visibility = Visibility.Hidden;
-            // Main.NavigationUIVisibility = NavigationUIVisibility.Hidden;
-            Load();
+            BtnsMenu.Visibility = Visibility.Hidden;
+            Main.NavigationUIVisibility = NavigationUIVisibility.Hidden;
+            Main.Content = new LoadSavedGamePage();
         }
-        //Save Game Command
+
+        /// <summary>
+        /// Method that checks whether the "Save game" command can be executed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SaveCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = false;
         }
 
+        ///// <summary>
+        ///// Method that handles the "Save game" command. 
+        ///// </summary>
+        ///// <param name="sender"></param>
+        ///// <param name="e"></param>
         private void SaveCommand_Executed(object sender, ExecutedRoutedEventArgs e) { }
 
+
+        /// <summary>
+        /// Method that checks whether the "Undo" command can be executed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void UndoCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = false;
         }
 
+        /// <summary>
+        /// Method that handles the "Undo" command.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void UndoCommand_Executed(object sender, ExecutedRoutedEventArgs e){ }
 
+
+        /// <summary>
+        /// Method that checks whether the "Redo" command can be executed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void RedoCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = false;
         }
 
+        /// <summary>
+        /// Method that handles the "Redo" command.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void RedoCommand_Executed(object sender, ExecutedRoutedEventArgs e) { }
 
-        
-        #endregion
 
-        private void Load()
+        /// <summary>
+        /// Method that checks whether the "Show statistic" command can be executed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void StatisticCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        ///// <summary>
+        ///// Method that handles the "Statistic" command. 
+        ///// </summary>
+        ///// <param name="sender"></param>
+        ///// <param name="e"></param>
+        private void StatisticCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             BtnsMenu.Visibility = Visibility.Hidden;
             Main.NavigationUIVisibility = NavigationUIVisibility.Hidden;
-            Main.Content = new LoadSavedGamePage();
-
-
+            Main.Content = new StatisticsPage();
         }
 
-      
+        #endregion
     }
 }

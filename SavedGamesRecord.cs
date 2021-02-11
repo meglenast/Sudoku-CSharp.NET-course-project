@@ -12,15 +12,14 @@ namespace Sudoku
     {
 
         #region Fields
-        private const string FILE_NAME_SAVED_GAMES = "saved.dat";
-        private static SavedGamesRecord savedGamesInformaiton;
+        private readonly string FILE_NAME_SAVED_GAMES = "saved.dat";
 
         private Dictionary<string, SudokuGrid> gamesDictionary;
         private BinaryFormatter formatter;
 
         #endregion
 
-        #region Constructor
+        #region Constructors
         /// <summary>
         /// Genaeral purpose constructor
         /// </summary>
@@ -44,25 +43,23 @@ namespace Sudoku
         #endregion
 
         #region Public utillity methods
+        
+        /// <summary>
+        /// Method that deletes game from the dictionary with saved games.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public bool DeleteGame(string name)
         {
             if (!gamesDictionary.ContainsKey(name))
-            {
                 return false;
-            }
             else
-            {
-                if (this.gamesDictionary.Remove(name))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
+                return this.gamesDictionary.Remove(name);
         }
 
+        /// <summary>
+        /// Methode that serialize new saved game.
+        /// </summary>
         public void Save()
         {
             try
@@ -74,24 +71,39 @@ namespace Sudoku
             }
             catch (Exception)
             {
-                Console.WriteLine("Error, whiele serializing..");
+                Console.WriteLine("Error, while serializing..");
             }
         }
+        
+        /// <summary>
+        /// Method that loads all of the saved games.
+        /// </summary>
+        /// <returns></returns>
         public Dictionary<String, SudokuGrid> Load()
         {
             Deserialize();
             return gamesDictionary;
         }
 
+        /// <summary>
+        /// Method that a game reffered by it's name.
+        /// </summary>
+        /// <param name="selectedGame"></param>
+        /// <returns></returns>
         public SudokuGrid LoadByName(string selectedGame)
         {
             Load();
-            SudokuGrid gameToLoad = new SudokuGrid(Difficulty.Easy);
+            SudokuGrid gameToLoad = new SudokuGrid(Difficulty.LOADED_SUDOKU);
             gamesDictionary.TryGetValue(selectedGame, out gameToLoad);
+            gameToLoad.NumInitValues = 0;
             return gameToLoad;
         }
-
         #endregion
+
+        #region Private methods
+        /// <summary>
+        /// Methods that deserialize all games  from a file.
+        /// </summary>
         private void Deserialize()
         {
             if (File.Exists(FILE_NAME_SAVED_GAMES))
@@ -99,19 +111,12 @@ namespace Sudoku
                 try
                 {
                     FileStream readFileStream = new FileStream(FILE_NAME_SAVED_GAMES, FileMode.Open, FileAccess.Read);
-                    //readFileStream.Seek(0, SeekOrigin.Begin);
-                    //long len = readFileStream.Length;
-                    //gamesDictionary = (Dictionary<String, SudokuGrid>)formatter.Deserialize(readFileStream);
-                    //long pos = readFileStream.Position;
-                    //gamesDictionary = (Dictionary<String, SudokuGrid>)formatter.Deserialize(readFileStream);
-                    //pos = readFileStream.Position;
-
 
                     while (readFileStream.Position != readFileStream.Length)
                     {
-                        Dictionary<String, SudokuGrid>saved = (Dictionary<String, SudokuGrid>)formatter.Deserialize(readFileStream);
+                        Dictionary<String, SudokuGrid> saved = (Dictionary<String, SudokuGrid>)formatter.Deserialize(readFileStream);
                         var first = saved.First();
-                        gamesDictionary.Add(first.Key,first.Value);
+                        gamesDictionary.Add(first.Key, first.Value);
                     }
 
                     readFileStream.Close();
@@ -121,6 +126,7 @@ namespace Sudoku
                     Console.WriteLine("Error, while deserializing..");
                 }
             }
-        }
+        } 
+        #endregion
     }
 }

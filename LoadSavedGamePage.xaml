@@ -8,13 +8,30 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="LoadSavedGamePage">
 
+    <Page.Resources>
+        <Style x:Key="TitelStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="50"/>
+            <Setter Property="Margin" Value="0 60 0 60"/>
+            <Setter Property="Foreground" Value="Lavender"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="Margin" Value="150"/>
+            <Setter Property="Height" Value="25"/>
+            <Setter Property="Width" Value="150"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+    </Page.Resources>
+
     <Grid>
-        <Frame x:Name="LoadSavedGameFrame" >
-        </Frame>
-        <StackPanel x:Name="LaodSavedGamePageContent">
-            <Label Content="Choose a game to load.. "/>
-            <ComboBox x:Name="CmbBoxSavedGames" SelectedValuePath="Content"/>
-            <Button Name="BtnLoad" Content="Load" Click="BtnLoad_Click" />
+        <Frame x:Name="LoadSavedGameFrame"  Background="Lavender"/>
+        <StackPanel x:Name="LaodSavedGamePageContent" Margin="10" Background="Black">
+            <TextBlock Text="Choose a game to load.. " Style="{StaticResource TitelStyle}"/>
+            <!--ComboBox that contains user's saved games-->
+            <ComboBox x:Name="CmbBoxSavedGames" SelectedValuePath="Content" Width="200"/>
+            <!--Button to load the game choosen-->
+            <Button Name="BtnLoad" Content="Load" Click="BtnLoad_Click" Style="{StaticResource ButtonStyle}"/>
         </StackPanel>
     </Grid>
 </Page>

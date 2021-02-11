@@ -6,8 +6,9 @@
         xmlns:local="clr-namespace:Sudoku"
         xmlns:w="clr-namespace:Sudoku"
         mc:Ignorable="d"
-       Title="MainWindow" Height="700" Width="750">
+       Title="Sudoku" Height="600" Width="750" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
 
+    <!--Custom commands binding-->
     <Window.CommandBindings>
         <CommandBinding Command="w:CustomCommands.Quit" CanExecute="QuitCommand_CanExecute" Executed="QuitCommand_Executed"/>
         <CommandBinding Command="w:CustomCommands.Solve" CanExecute="SolveCommand_CanExecute" Executed="SolveCommand_Executed"/>
@@ -16,11 +17,30 @@
         <CommandBinding Command="w:CustomCommands.Save" CanExecute="SaveCommand_CanExecute" Executed="SaveCommand_Executed"/>
         <CommandBinding Command="w:CustomCommands.Undo" CanExecute="UndoCommand_CanExecute" Executed="UndoCommand_Executed"/>
         <CommandBinding Command="w:CustomCommands.Redo" CanExecute="RedoCommand_CanExecute" Executed="RedoCommand_Executed"/>
+        <CommandBinding Command="w:CustomCommands.Statistic" CanExecute="StatisticCommand_CanExecute" Executed="StatisticCommand_Executed"/>
     </Window.CommandBindings>
 
-    <Grid>
+    <!--Window resources-->
+    <Window.Resources>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="Margin" Value="15"/>
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="Width" Value="150"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+        <Style x:Key="TitelStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="50"/>
+            <Setter Property="Margin" Value="20"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid >
         <DockPanel>
-            <Menu DockPanel.Dock="Top" x:Name="MenuCntl">
+            <Menu x:Name="MenuCntl" DockPanel.Dock="Top" >
+                <!--Starting a game menu options-->
                 <MenuItem Header="Game">
                     <MenuItem Header="Load Game" >
                         <MenuItem Header= "New Game" Command="w:CustomCommands.LoadNewGame"/>
@@ -30,22 +50,30 @@
                     <Separator />
                     <MenuItem Header="Quit"  Command="w:CustomCommands.Quit"/>
                 </MenuItem>
+                <!--In game menu options-->
                 <MenuItem Header="Edit">
                     <MenuItem Header="Undo" Command="w:CustomCommands.Undo"/>
                     <MenuItem Header="Redo" Command="w:CustomCommands.Redo"/>
                 </MenuItem>
+                <!--Showing the solution option-->
                 <MenuItem Header="Solve" Command="w:CustomCommands.Solve"/>
-                <MenuItem Header="Stat"/>
+                <!--Showing the games statistic option-->
+                <MenuItem Header="Statistic" Command="w:CustomCommands.Statistic"/>
             </Menu>
         </DockPanel>
-
-        <StackPanel x:Name="BtnsMenu" Orientation="Horizontal" VerticalAlignment="Top" Margin="10,50,0,0">
-            <Button x:Name="BtnNewGame" Content="NewGame" Margin="10" Command="w:CustomCommands.LoadNewGame"/>
-            <Button x:Name="BtnLoadGame" Content="LoadGame" Margin="10" Command="w:CustomCommands.LoadSavedGame"/>
-            <Button x:Name="BtnHighScore" Content="HighScore" Margin="10"/>
-            <Button x:Name="BtnQuit" Content="Quit" Margin="10" Command="w:CustomCommands.Quit" />
+        
+        <!--Main menu-->
+        <StackPanel x:Name="BtnsMenu" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Vertical" Margin="10,100" Background="Black" Height="400" Width="300">
+            <TextBlock Text="SUDOKU" Style="{StaticResource TitelStyle}"/>
+            <!--Starting a new game button-->
+            <Button x:Name="BtnNewGame"   Content="NewGame"     Command="w:CustomCommands.LoadNewGame"   Style="{StaticResource ButtonStyle}"/>
+            <!--Loading a saved game button-->
+            <Button x:Name="BtnLoadGame"  Content="LoadGame"    Command="w:CustomCommands.LoadSavedGame" Style="{StaticResource ButtonStyle}"/>
+            <!--Showing the game statistic button-->
+            <Button x:Name="BtnStatistic" Content="Statistic"   Command="w:CustomCommands.Statistic"     Style="{StaticResource ButtonStyle}"/>
+            <!--Starting a new game button-->
+            <Button x:Name="BtnQuit"      Content="Quit"        Command="w:CustomCommands.Quit"      Style="{StaticResource ButtonStyle}"/>
         </StackPanel>
-        <Frame x:Name="Main" Margin="0,60,0,0">
-        </Frame>
+        <Frame x:Name="Main" Margin="0,60,0,0"/>
     </Grid>
 </Window>

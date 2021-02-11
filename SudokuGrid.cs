@@ -9,25 +9,42 @@ namespace Sudoku
     [Serializable]
     class SudokuGrid
     {
+        #region Fields
         protected static readonly int GRID_SIZE = 9;
+
         private int[,] grid;
-        private int[,] originalSudokuGrid;
-        private Stack<int[,]> undoStackHistory;
-        private Stack<int[,]> redoStackHistory;
+        private readonly int[,] originalSudokuGrid;
+
+        private readonly Difficulty difficulty;
         private bool initialize;
         protected int numInitValues;
 
+        private Stack<int[,]> undoStackHistory;
+        private Stack<int[,]> redoStackHistory;
+        #endregion
+
+        #region Constructors
+        /// <summary>
+        /// General purpose constuctor
+        /// </summary>
+        /// <param name="difficulty"></param>
         public SudokuGrid(Difficulty difficulty)
         {
             initialize = true;
+
             SudokuGenerator sudokuGenerator = new SudokuGenerator(difficulty);
             grid = sudokuGenerator.SudokuPuzzle;
             originalSudokuGrid = new int[GRID_SIZE, GRID_SIZE];
-            Array.Copy(grid,originalSudokuGrid,81);
+
+            Array.Copy(grid, originalSudokuGrid, 81);
+
             SetNumInitValues();
+            this.difficulty = difficulty;
+
             undoStackHistory = new Stack<int[,]>();
             redoStackHistory = new Stack<int[,]>();
         }
+        #endregion
 
         #region Properties
 
@@ -57,6 +74,12 @@ namespace Sudoku
                 numInitValues = value;
             }
         }
+
+        public Difficulty Difficulty
+        {
+            get => difficulty;
+        }
+
 
 
         public bool Initialize { set { initialize = value; } }
@@ -98,9 +121,9 @@ namespace Sudoku
 
         public int[,] OriginalSudokuGrid
         {
-            get 
+            get
             {
-                int[,] res = new int[GRID_SIZE,GRID_SIZE];
+                int[,] res = new int[GRID_SIZE, GRID_SIZE];
                 Array.Copy(originalSudokuGrid, res, GRID_SIZE * GRID_SIZE);
                 return res;
             }
@@ -108,12 +131,25 @@ namespace Sudoku
 
         #endregion
 
-        #region ValidityChecks
+        #region Methods that validate moves
+
+        /// <summary>
+        /// Method that checks whether the given value is a valid next move.
+        /// </summary>
+        /// <param name="row"></param>
+        /// <param name="col"></param>
+        /// <returns></returns>
         public bool AcceptableValue(int row, int col)
         {
             return (CheckRow(row, col) && CheckColumn(row, col) && CheckSquare(row, col));
         }
 
+        /// <summary>
+        /// Method that checks whether the given value is a valid next move for the row given.
+        /// </summary>
+        /// <param name="row"></param>
+        /// <param name="col"></param>
+        /// <returns></returns>
         private bool CheckRow(int row, int col)
         {
             for (int j = 0; j < GRID_SIZE; j++)
@@ -126,6 +162,12 @@ namespace Sudoku
             return true; //No row concurrence
         }
 
+        /// <summary>
+        /// Method that checks whether the given value is a valid next move for the column given.
+        /// </summary>
+        /// <param name="row"></param>
+        /// <param name="col"></param>
+        /// <returns></returns>
         private bool CheckColumn(int row, int col)
         {
             for (int i = 0; i < GRID_SIZE; i++)
@@ -137,6 +179,13 @@ namespace Sudoku
             }
             return true; //No column concurrence
         }
+
+        /// <summary>
+        /// Method that returns the coordinates of the subgrid refered by the indexes.
+        /// </summary>
+        /// <param name="row"></param>
+        /// <param name="col"></param>
+        /// <returns></returns>
         private bool CheckSquare(int row, int col)
         {
             //First row
@@ -162,6 +211,14 @@ namespace Sudoku
                 return CheckSqaureDefinedByRowCol(6, 6, row, col);
         }
 
+        /// <summary>
+        /// Method that checks whether the given value is a valid next move for the subgrid given.
+        /// </summary>
+        /// <param name="row"></param>
+        /// <param name="col"></param>
+        /// <param name="val_row"></param>
+        /// <param name="val_col"></param>
+        /// <returns></returns>
         private bool CheckSqaureDefinedByRowCol(int row, int col, int val_row, int val_col)
         {
             for (int i = row; i < row + 3; i++)
@@ -177,6 +234,9 @@ namespace Sudoku
         #endregion
 
         #region UndoMethods
+        /// <summary>
+        /// Methods that adds the current state of the grid to the undo stack.
+        /// </summary>
         public void addToHistory()
         {
             if (!initialize)
@@ -193,36 +253,58 @@ namespace Sudoku
             }
         }
 
+        /// <summary>
+        /// Method that cheks whether the Undo operation can be done.
+        /// </summary>
+        /// <returns></returns>
         public bool Undoable()
         {
             return undoStackHistory.Count < 2 ? false : true;
         }
 
+        /// <summary>
+        /// Method that cheks whether the Redo operation can be done.
+        /// </summary>
+        /// <returns></returns>
         public bool Redoable()
         {
             return redoStackHistory.Count < 1 ? false : true;
         }
 
-        public int[,] getPreviousGrid()
+        /// <summary>
+        /// Method that returns the grid from the Undo operation.
+        /// </summary>
+        /// <returns></returns>
+        public int[,] GetPreviousGrid()
         {
             int[,] temp = new int[9, 9];
             redoStackHistory.Push(undoStackHistory.Pop());
             temp = undoStackHistory.Peek();
             return temp;
-
         }
 
+        /// <summary>
+        /// Medhod that returns the grid from the Redo operation.  
+        /// </summary>
+        /// <returns></returns>
         public int[,] GetRedoGrid()
         {
             int[,] temp = new int[9, 9];
             temp = redoStackHistory.Pop();
             return temp;
         }
+
+        /// <summary>
+        /// Method that clears the redo stack
+        /// </summary>
         public void ClearRedoHistory()
         {
             redoStackHistory.Clear();
         }
 
+        /// <summary>
+        /// Method that resets to the original grid
+        /// </summary>
         public void Reset()
         {
             for (int i = 0; i < GRID_SIZE; i++)
@@ -237,8 +319,21 @@ namespace Sudoku
             undoStackHistory.Push(originalSudokuGrid);
             SetNumInitValues();
         }
+
+        /// <summary>
+        /// Method that returns the original value referred by the indexes.
+        /// </summary>
+        /// <param name="row"></param>
+        /// <param name="col"></param>
+        /// <returns></returns>
+        public int OriginalValue(int row, int col) => originalSudokuGrid[row, col];
+
         #endregion
 
+        #region Uitllity methods
+        /// <summary>
+        /// Method that sets the number of initialized cells
+        /// </summary>
         private void SetNumInitValues()
         {
             int cnt = 0;
@@ -256,6 +351,6 @@ namespace Sudoku
             numInitValues = cnt;
         }
 
-
+        #endregion
     }
 }

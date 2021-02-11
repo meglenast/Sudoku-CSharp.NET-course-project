@@ -24,53 +24,72 @@ namespace Sudoku
         #region Fields
 
         private bool onRedo;
+        private bool onSolver;
         private SudokuGrid grid;
         private TimeTracker timeTracker;
         internal static GridPage page;
 
         #endregion
 
+        #region Constructors
+        /// <summary>
+        /// General purpose constructor.
+        /// </summary>
+        /// <param name="selectedGame"></param>
         public GridPage(string selectedGame)
         {
             SavedGamesRecord savedGames = new SavedGamesRecord();
             grid = savedGames.LoadByName(selectedGame);
-            //grid = new SudokuGrid(difficulty);
 
             page = this;
             timeTracker = new TimeTracker();
             onRedo = false;
-
+            onSolver = false;
             InitializeComponent();
 
             Loaded += MainPageLoaded;
         }
 
+        /// <summary>
+        /// General purpose constructor.
+        /// </summary>
+        /// <param name="difficulty"></param>
         public GridPage(Difficulty difficulty)
         {
-
             grid = new SudokuGrid(difficulty);
             page = this;
             timeTracker = new TimeTracker();
             onRedo = false;
+            onSolver = false;
 
             InitializeComponent();
-            
+
             Loaded += MainPageLoaded;
         }
+        #endregion
 
         #region EventHandlers
-        
+
+        /// <summary>
+        /// Method that handles the time tracker change.
+        /// </summary>
         public string TimeTracker
         {
             set { Dispatcher.Invoke(new Action(() => { LblTimer.Text = value; })); }
         }
 
+        /// <summary>
+        /// Method that handles the chages in the grid by the user.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void TxtBoxChanged(object sender, TextChangedEventArgs e)
         {
             TextBox textBox = (TextBox)sender;
             if (textBox.Text == string.Empty)
             {
-                // grid.addToHistory();
+                SetUsersValue(textBox, 0);
+                grid.NumInitValues += 1;
                 return;
             }
             else if (!int.TryParse(textBox.Text, out int res) || !(res >= 1 && res <= 9))
@@ -85,11 +104,18 @@ namespace Sudoku
                 SetUsersValue(textBox, res);
                 grid.addToHistory();
 
-                if (grid.NumInitValues == 81)
+                if (grid.NumInitValues == 81 && textBox.Background != Brushes.IndianRed && onSolver == false)
+                {
+                    Statistic.AddToStatistic(grid.Difficulty, true);
                     MessageBox.Show("Won");
+                }
+
+                if (grid.NumInitValues == 81 && onSolver)
+                {
+                    Statistic.AddToStatistic(grid.Difficulty, false);
+                }
             }
         }
-
 
         void MainPageLoaded(object sender, RoutedEventArgs e)
         {
@@ -109,10 +135,19 @@ namespace Sudoku
                 }
                 if (grid[row, col] != 0)
                 {
-                    textBox.Text = grid[row, col].ToString();
-                    textBox.FontFamily = new FontFamily("SettedValue");
-                    textBox.FontWeight = FontWeights.Bold;
-                    textBox.Background = Brushes.Gray;
+                    if (grid.OriginalValue(row,col) != grid[row,col])
+                    {
+                        textBox.Text = grid[row, col].ToString();
+                        textBox.FontFamily = new FontFamily("SettedValue");
+                        textBox.Background = Brushes.Transparent;
+                    }
+                    else
+                    {
+                        textBox.Text = grid[row, col].ToString();
+                        textBox.FontFamily = new FontFamily("SettedValue");
+                        textBox.FontWeight = FontWeights.Bold;
+                        textBox.Background = Brushes.LightSlateGray;
+                    }
                 }
                 else
                 {
@@ -128,64 +163,130 @@ namespace Sudoku
 
         #region Commands Handlers
 
-        //Undo Command
+        /// <summary>
+        /// Method that checks whether the Undo command can be executed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void UndoCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = grid.Undoable();
+            e.CanExecute = (grid.Undoable() && onSolver == false);
         }
 
+        /// <summary>
+        /// Method exccutes the Undo command. 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void UndoCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             Undo();
         }
 
-        //Redo Command
+        /// <summary>
+        /// Method that checks whether the Redo commmand can be exucuted.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void RedoCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = grid.Redoable();
+            e.CanExecute = (grid.Redoable() && onSolver == false);
         }
 
+        /// <summary>
+        /// Method exccutes the Redo command.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void RedoCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             Redo();
         }
-        
-        //Reset Command
+
+        /// <summary>
+        /// Method that checks whether the Reset commmand can be exucuted.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ResetCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = grid.Undoable();
+            e.CanExecute = (grid.Undoable() && onSolver == false);
         }
 
+        /// <summary>
+        /// Method executes the Reset command.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ResetCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             Reset();
         }
 
-        //Solve Command
+        /// <summary>
+        /// Method that checks whether the Solve commmand can be exucuted.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SolveCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            //check if valid state!
-            e.CanExecute = true;
+            if (IsSudokuInValidState() && onSolver == false)
+                e.CanExecute = true;
+            else
+                e.CanExecute = false;
         }
 
+        /// <summary>
+        /// Method executes the Solve command.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SolveCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
+            onSolver = true;
             Solve();
         }
 
-        //Save Command
+        /// <summary>
+        ///  Method that checks whether the Save commmand can be exucuted.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SaveCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            //check if valid state!
-            e.CanExecute = true;
+            if (IsSudokuInValidState() && onSolver == false)
+                e.CanExecute = true;
+            else
+                e.CanExecute = false;
         }
 
+        /// <summary>
+        /// Method executes the Save command.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SaveCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             Save();
         }
 
+        /// <summary>
+        /// Method that executes the Quit Command.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void QuitCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            Statistic.AddToStatistic(grid.Difficulty, false);
+            Application.Current.Shutdown();
+        }
+        #endregion
 
+        #region Undo, Redo, Save utillity methods
+
+        /// <summary>
+        /// Method that saves the game with a given name. 
+        /// </summary>
         private void Save()
         {
             SaveGameWindow sw = new SaveGameWindow();
@@ -203,6 +304,9 @@ namespace Sudoku
             savedGames.Save();
         }
 
+        /// <summary>
+        /// Method that shows the sudoku solution on screen. 
+        /// </summary>
         private void Solve()
         {
             SudokuSolver solver = new SudokuSolver(grid.Grid);
@@ -231,12 +335,13 @@ namespace Sudoku
                 ++col;
             }
         }
-        #endregion
 
-        #region Undo/Redo
+        /// <summary>
+        /// Methodthat shows he result of the Undo command on screen.
+        /// </summary>
         private void Undo()
         {
-            int[,] prev = grid.getPreviousGrid();
+            int[,] prev = grid.GetPreviousGrid();
             List<TextBox> curr = AllTextBoxes(this);
 
             int col = 0;
@@ -255,17 +360,15 @@ namespace Sudoku
                 }
                 if (int.TryParse(textBox.Text, out int res) && res != prev[row, col] && prev[row, col] == 0)
                 {
-                    onRedo = true;
-                    SetUsersValue(textBox, 0);
-                    onRedo = false;
-                    return;
+                    textBox.Text = string.Empty;
                 }
                 ++col;
             }
-
-            grid.NumInitValues -= 1;
         }
 
+        /// <summary>
+        /// Methodthat shows he result of the Redo command on screen.
+        /// </summary>
         private void Redo()
         {
             int[,] redoGrid = grid.GetRedoGrid();
@@ -287,16 +390,15 @@ namespace Sudoku
                 }
                 if ((int.TryParse(textBox.Text, out int res) && res != redoGrid[row, col]) || (textBox.Text == string.Empty && redoGrid[row, col] != 0))
                 {
-                    onRedo = true;
-                    SetUsersValue(textBox, redoGrid[row, col]);
-                    onRedo = false;
-                    //return;
+                    textBox.Text = redoGrid[row, col].ToString();
                 }
                 ++col;
             }
-            grid.NumInitValues += 1;
         }
 
+        /// <summary>
+        /// Methodthat shows he result of the Reset command on screen.
+        /// </summary>
         private void Reset()
         {
             
@@ -321,39 +423,34 @@ namespace Sudoku
                 }
                 if ((int.TryParse(textBox.Text, out int res) && res != originalGrid[row, col]) || (textBox.Text == string.Empty && originalGrid[row, col] != 0))
                 {
-                    onRedo = true;
                     SetUsersValue(textBox, originalGrid[row, col]);
-                    onRedo = false;
-                    //return;
                 }
                 ++col;
             }
-            grid.NumInitValues += 1;
-
         }
-
         #endregion
 
-        #region private
+        #region Private methods
+        /// <summary>
+        /// Utillity method that sets solution value in TextBox.
+        /// </summary>
+        /// <param name="textBox"></param>
+        /// <param name="value"></param>
         private void SetSolutionValue(TextBox textBox, string value)
         {
             textBox.Text = value;
-            textBox.Background = Brushes.PaleVioletRed;
+            textBox.Background = Brushes.MediumPurple;
         }
 
+        /// <summary>
+        /// Utillity method that sets a value in TextBox. 
+        /// </summary>
+        /// <param name="textBox"></param>
+        /// <param name="res"></param>
         private void SetUsersValue(TextBox textBox, int res)
         {
-            (int row, int col) coordinates = GetBoxCoordinatesByName(textBox);
-
-            //if (int.TryParse(textBox.Text, out int result))
-            //{
-            //    grid[coordinates.row, coordinates.col] = result;
-            //}
-            //else
-            //{
-            //    grid[coordinates.row, coordinates.col] = 0;
-            //}
-
+            (int row, int col) coordinates = GetTextBoxCoordinates(textBox);
+     
             grid[coordinates.row, coordinates.col] = res;
 
             if (res == 0)
@@ -374,18 +471,22 @@ namespace Sudoku
                 textBox.Text = res.ToString();
                 textBox.IsReadOnly = true;
                 textBox.Background = Brushes.IndianRed;
-                //grid[coordinates.row, coordinates.col] = 0;
-                //textBox.Text = string.Empty;
             }
         }
-        private static (int, int) GetBoxCoordinatesByName(TextBox textBox)
-        {
-            int row = Int32.Parse((textBox.Name[7]).ToString());
-            int col = Int32.Parse((textBox.Name[8]).ToString());
-            return (row, col);
-        }
-        #endregion
 
+        /// <summary>
+        /// Utility method that returns the coordinated of a textbox referred by the WPF object. 
+        /// </summary>
+        /// <param name="textBox"></param>
+        /// <returns></returns>
+        private static (int, int) GetTextBoxCoordinates(TextBox textBox)
+            => (Int32.Parse((textBox.Name[7]).ToString()), Int32.Parse((textBox.Name[8]).ToString()));
+
+        /// <summary>
+        ///  Utility method that returns a List<TextBox> representing the sudoku grid.
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <returns></returns>
         private List<TextBox> AllTextBoxes(DependencyObject parent)
         {
             var list = new List<TextBox>();
@@ -399,5 +500,21 @@ namespace Sudoku
             return list;
         }
 
+        /// <summary>
+        ///  Utility method that checks whether the sudoku is in a valid state.
+        /// </summary>
+        /// <returns></returns>
+        private bool IsSudokuInValidState()
+        {
+            List<TextBox> sudokuGrid = AllTextBoxes(this);
+            foreach (TextBox textBox in sudokuGrid)
+            {
+                if (textBox.Background == Brushes.IndianRed)
+                    return false;
+            }
+            return true;
+        }
+
+        #endregion
     }
 }
